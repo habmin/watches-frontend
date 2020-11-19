@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import NewProduct from './components/NewProduct.jsx';
+import ShowProduct from './components/ShowProduct.jsx';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 let baseURL;
 if (process.env.NODE_ENV === 'development')
   baseURL = 'http://localhost:3005';
-else 
+else
   baseURL = 'heroku/depploment URL placehorder';
 
 class App extends Component {
@@ -13,7 +15,7 @@ class App extends Component {
     this.state = {
       products: []
     }
-  } 
+  }
 
   getProducts = async () => {
     try{
@@ -53,6 +55,9 @@ class App extends Component {
               <div className="product" key={product._id}>
                 <h1>{product.name}</h1>
                 <img src={product.img} />
+                <Router>
+                <Route path ="/ShowProdcut" component={ShowProduct}/>
+                </Router>
               </div>
             )
           })
