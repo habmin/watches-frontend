@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NewProduct from './components/NewProduct.jsx';
 import ShowProduct from './components/ShowProduct.jsx';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 let baseURL;
 if (process.env.NODE_ENV === 'development')
@@ -48,20 +48,25 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
-        {
-          this.state.products.map((product) => {
-            return (
-              <div className="product" key={product._id}>
-                <h1>{product.name}</h1>
-                <img src={product.img} />
-                <Router>
-                <Route path ="/ShowProdcut" component={ShowProduct}/>
-                </Router>
-              </div>
-            )
-          })
-        }
+        <Router>
+          <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
+          {
+            this.state.products.map((product) => {
+              return (
+                <div className="product" key={product._id}>
+                  <h1>{product.name}</h1>
+                  <img src={product.img} />
+                    <Link to={"/" + product._id}>More Details</Link>
+                  <Switch>
+                    <Route path={"/" + product._id}>
+                      <ShowProduct baseURL={baseURL} product={product}/>
+                    </Route>
+                  </Switch>
+                </div>
+              )
+            })
+          }
+        </Router>
       </div>
     );
   }
