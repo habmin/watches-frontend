@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import NewProduct from './components/NewProduct.jsx';
+import ShowProduct from './components/ShowProduct.jsx';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 let baseURL;
 if (process.env.NODE_ENV === 'development')
   baseURL = 'http://localhost:3005';
-else 
+else
   baseURL = 'heroku/depploment URL placehorder';
 
 class App extends Component {
@@ -13,7 +15,7 @@ class App extends Component {
     this.state = {
       products: []
     }
-  } 
+  }
 
   getProducts = async () => {
     try{
@@ -46,17 +48,44 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
-        {
-          this.state.products.map((product) => {
-            return (
-              <div className="product" key={product._id}>
-                <h1>{product.name}</h1>
-                <img src={product.img} />
-              </div>
-            )
-          })
-        }
+        <Router>
+          <div className="header">
+            {
+            /* make this a nav bar
+            user sign in
+            */
+            }
+            <Link to="/">View Watches</Link>
+            <Link to="/new">Add Watch</Link>
+          </div>
+          <Switch>
+            {
+              this.state.products.map((product) => {
+                return (
+                  <Route path={"/" + product._id}>
+                    <ShowProduct baseURL={baseURL} product={product}/>
+                  </Route>
+                );
+              })
+            }
+            <Route path='/new'>
+              <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
+            </Route>
+            <Route path='/'>
+              {
+                this.state.products.map((product) => {
+                  return (
+                    <div className="product" key={product._id}>
+                      <h1>{product.name}</h1>
+                      <img src={product.img} />
+                      <Link to={"/" + product._id}>More Details</Link>
+                    </div>
+                  )
+                })
+              }
+            </Route>
+          </Switch>
+        </Router>
       </div>
     );
   }
