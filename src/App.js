@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import NewProduct from './components/NewProduct.jsx';
 
 let baseURL;
 if (process.env.NODE_ENV === 'development')
@@ -32,11 +33,20 @@ class App extends Component {
 
   componentDidMount() {
     this.getProducts();
-  }
+  };
+
+  addProduct = async (newProduct) => {
+    const productsBuffer = [...this.state.products];
+    productsBuffer.push(newProduct);
+    this.setState({
+      products: productsBuffer
+    });
+  };
 
   render() {
     return (
       <div className="App">
+        <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
         {
           this.state.products.map((product) => {
             return (
