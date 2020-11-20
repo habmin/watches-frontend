@@ -88,7 +88,7 @@ class App extends Component {
           </div>
           <Switch>
             <Route path='/signup'>
-              <SignUp baseURL={baseURL}/>
+              <SignUp baseURL={baseURL} loginUser={this.loginUser}/>
             </Route>
             {
               this.state.products.map((product) => {

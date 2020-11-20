@@ -7,18 +7,20 @@ class SignUp extends Component {
     this.state = {
       username: "",
       password: "",
+      email: "",
+      name: "",
+      phone: "",
       passwordConfirmation: "",
       isError: false,
       errorMsg: "",
+      redirect: false
     };
   }
 
   handleChange = (event) =>
     this.setState({
       [event.target.name]: event.target.value
-      // isError: false,
-      // errorMsg: "",
-    });
+  });
 
   onSignUp = (event) => {
     event.preventDefault();
@@ -34,16 +36,28 @@ class SignUp extends Component {
         body: JSON.stringify({
             username: this.state.username,
             password: this.state.password,
+            email: this.state.email,
+            name: this.state.name,
+            phone: this.state.phone,
+            email: this.state.email
         }),
         headers: {'Content-Type': 'application/json'}
       }).then((res) => {
           return res.json();
       }).then((user) => {
+        console.log(user);
+        if (user.error) {
+          this.setState({
+            errorMsg: `${user.error}`,
+            isError: true
+          });
+        }
+        else {
           this.props.loginUser(user);
           this.setState({
-              username: "",
-              password: "",
+              redirect: true
           });
+        }
       }).catch((err) => {console.error({'Error': err})});
     }
   };
@@ -54,20 +68,43 @@ class SignUp extends Component {
   };
 
   render() {
+    if (this.state.redirect)
+      return <Redirect to='/' />;
     return (
       <div className="form-container">
         <h3>Sign Up</h3>
         <form onSubmit={this.onSignUp}>
-          <label>Username</label>
+          <label htmlFor="username">Username:</label>
           <input
             required
             type="text"
             name="username"
-            value={this.state.username}
             placeholder="Enter username"
             onChange={this.handleChange}
           />
-          <label>Password</label>
+          <label htmlFor="email">Email:</label>
+          <input
+            required
+            type="text"
+            name="email"
+            placeholder="Enter email"
+            onChange={this.handleChange}
+          />
+          <label htmlFor="Name">Name:</label>
+          <input
+            type="text"
+            name="name"
+            placeholder="Enter Name"
+            onChange={this.handleChange}
+          />
+          <label htmlFor="Name">Phone Number:</label>
+          <input
+            type="text"
+            name="phone"
+            placeholder="Enter Phone Number"
+            onChange={this.handleChange}
+          />
+          <label htmlFor="password">Password</label>
           <input
             required
             name="password"
@@ -76,7 +113,7 @@ class SignUp extends Component {
             placeholder="Password"
             onChange={this.handleChange}
           />
-          <label>Password Confirmation</label>
+          <label htmlFor="passwordConfirmation">Password Confirmation</label>
           <input
             required
             name="passwordConfirmation"
