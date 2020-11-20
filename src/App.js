@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NewProduct from './components/NewProduct.jsx';
 import ShowProduct from './components/ShowProduct.jsx';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import SignIn from "./components/SignIn";
 
 let baseURL;
 if (process.env.NODE_ENV === 'development')
