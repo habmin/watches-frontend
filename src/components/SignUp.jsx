@@ -53,10 +53,31 @@ class SignUp extends Component {
           });
         }
         else {
-          this.props.loginUser(user);
-          this.setState({
+          //logins user automatically
+          fetch(this.props.baseURL + '/sessions', {
+            method: 'POST',
+            body: JSON.stringify({
+                username: this.state.username,
+                password: this.state.password,
+            }),
+            headers: {'Content-Type': 'application/json'}
+          }).then((res) => {
+            return res.json();
+          }).then((user) => {
+            console.log(user);
+            if (user.error) {
+            this.setState({
+              errorMsg: `${user.error}`,
+              isError: true
+            });
+          }
+          else {
+            this.props.loginUser(user);
+            this.setState({
               redirect: true
-          });
+            });
+          }
+          }).catch((err) => {console.error({'Error': err})});
         }
       }).catch((err) => {console.error({'Error': err})});
     }
