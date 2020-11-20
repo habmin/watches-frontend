@@ -14,47 +14,11 @@ class NewProduct extends Component {
         }
     }
 
-    nameHandler = (event) => {
+    handleChange = (event) => {
         this.setState({
-            name: event.target.value
+            [event.target.id]: event.target.value
         });
-    };
-
-    priceHandler = (event) => {
-        this.setState({
-            price: parseFloat(event.target.value)
-        });
-    };
-
-    descriptionHandler = (event) => {
-        this.setState({
-            description: event.target.value
-        });
-    };
-
-    imgHandler = (event) => {
-        this.setState({
-            img: event.target.value
-        });
-    };
-
-    materialHandler = (event) => {
-        this.setState({
-            material: event.target.value
-        });
-    };
-
-    colorHandler = (event) => {
-        this.setState({
-            color: event.target.value
-        });
-    };
-
-    strapHandler = (event) => {
-        this.setState({
-            strap: event.target.value
-        });
-    };
+    }
 
     submitHandler = (event) => {
         event.preventDefault();
@@ -91,31 +55,31 @@ class NewProduct extends Component {
             <form onSubmit={event => this.submitHandler(event)}>
                 <label htmlFor="name">Name:</label>
                 <input type="text" id="name"
-                    onChange={event => this.nameHandler(event)}
+                    onChange={event => this.handleChange(event)}
                     value={this.state.name}/>
                 <label htmlFor="price">Price:</label>
                 <input type="number" step="0.01" id="price"
-                    onChange={event => this.priceHandler(event)}
+                    onChange={event => this.handleChange(event)}
                     value={this.state.price}/>
                 <label htmlFor="description">Description:</label>
                 <input type="text" id="description"
-                    onChange={event => this.descriptionHandler(event)}
+                    onChange={event => this.handleChange(event)}
                     value={this.state.description}/>
                 <label htmlFor="img">IMG Source:</label>
                 <input type="text" id="img"
-                    onChange={event => this.imgHandler(event)}
+                    onChange={event => this.handleChange(event)}
                     value={this.state.img}/>
                 <label htmlFor="material">Material:</label>
                 <input type="text" id="material"
-                    onChange={event => this.materialHandler(event)}
+                    onChange={event => this.handleChange(event)}
                     value={this.state.material}/>
                 <label htmlFor="color">Color:</label>
                 <input type="text" id="color"
-                    onChange={event => this.colorHandler(event)}
+                    onChange={event => this.handleChange(event)}
                     value={this.state.color}/>
                 <label htmlFor="Strap">Strap:</label>
                 <input type="text" id="strap"
-                    onChange={event => this.strapHandler(event)}
+                    onChange={event => this.handleChange(event)}
                     value={this.state.strap}/>
                 <button type="submit">Submit</button>
             </form>

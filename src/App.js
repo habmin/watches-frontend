@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NewProduct from './components/NewProduct.jsx';
 import ShowProduct from './components/ShowProduct.jsx';
+import ProductEdit from './components/ProductEdit.jsx';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 let baseURL;
@@ -37,13 +38,22 @@ class App extends Component {
     this.getProducts();
   };
 
-  addProduct = async (newProduct) => {
+  addProduct = (newProduct) => {
     const productsBuffer = [...this.state.products];
     productsBuffer.push(newProduct);
     this.setState({
       products: productsBuffer
     });
   };
+
+  updateProduct = (updatedProduct) => {
+    const index = this.state.products.findIndex(indexTarget => indexTarget._id === updatedProduct._id);
+    const productsBuffer = [...this.state.products];
+    productsBuffer[index] = updatedProduct;
+    this.setState({
+      products: productsBuffer
+    });
+  }
 
   render() {
     return (
@@ -62,7 +72,16 @@ class App extends Component {
             {
               this.state.products.map((product) => {
                 return (
-                  <Route path={"/" + product._id}>
+                  <Route path={"/" + product._id + "/edit"}>
+                    <ProductEdit baseURL={baseURL} product={product} updateProduct={this.updateProduct}/>
+                  </Route>
+                );
+              })
+            }
+            {
+              this.state.products.map((product) => {
+                return (
+                  <Route exact path={"/" + product._id}>
                     <ShowProduct baseURL={baseURL} product={product}/>
                   </Route>
                 );
@@ -78,6 +97,7 @@ class App extends Component {
                     <div className="product" key={product._id}>
                       <h1>{product.name}</h1>
                       <img src={product.img} />
+                      <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
                       <Link to={"/" + product._id}>More Details</Link>
                     </div>
                   )

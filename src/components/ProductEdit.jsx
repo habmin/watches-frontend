@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter, Redirect} from 'react-router-dom'
 
 class ProductEdit extends Component {
     constructor(props) {
@@ -10,17 +11,18 @@ class ProductEdit extends Component {
             img: this.props.product.img,
             material: this.props.product.material,
             color: this.props.product.color,
-            strap: this.props.product.strap 
+            strap: this.props.product.strap,
+            redirect: false 
         }
     }
 
     handleChange = (event) => {
         this.setState({
-            [event.target.name]: event.target.value
+            [event.target.id]: event.target.value
         });
     }
 
-    handleSubmit = async (event) => {
+    handleSubmit = (event) => {
         event.preventDefault();
         fetch(this.props.baseURL + '/watches/' + this.props.product._id, {
             method: 'PUT',
@@ -37,11 +39,16 @@ class ProductEdit extends Component {
         }).then((res) => {
             return res.json();
         }).then((product) => {
-            //Update app.js to push state up
+            this.props.updateProduct(product);
+            this.setState({
+                redirect: true
+            });
         }).catch((err) => {console.error({'Error': err})});
     }
 
     render() {
+        if (this.state.redirect)
+            return <Redirect to='/' />
         return (
                 <div className="product-edit">
                     <div className="image-container">
@@ -111,4 +118,4 @@ class ProductEdit extends Component {
     }
 }
 
-export default ProductEdit
+export default withRouter(ProductEdit);
