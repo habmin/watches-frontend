@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import { withRouter, Redirect} from 'react-router-dom';
 
 class SignUp extends Component {
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
     this.state = {
       username: "",
       password: "",
@@ -15,48 +15,45 @@ class SignUp extends Component {
 
   handleChange = (event) =>
     this.setState({
-      [event.target.name]: event.target.value,
-      isError: false,
-      errorMsg: "",
+      [event.target.name]: event.target.value
+      // isError: false,
+      // errorMsg: "",
     });
 
   onSignUp = (event) => {
     event.preventDefault();
-
-    const { history, setUser } = this.props;
-
-    signUp(this.state)
-      .then(() => signIn(this.state))
-      .then((res) => setUser(res.user))
-      .then(() => history.push("/"))
-      .catch((error) => {
-        console.error(error);
-        this.setState({
-          username: "",
-          password: "",
-          passwordConfirmation: "",
-          isError: true,
-          errorMsg: "Sign Up Details Invalid",
-        });
+    if (this.state.password !== this.state.passwordConfirmation){
+      this.setState({
+        errorMsg: "Password and confirmation do not match",
+        isError: true
       });
-  };
-
-  renderError = () => {
-    const toggleForm = this.state.isError ? "danger" : "";
-    if (this.state.isError) {
-      return (
-        <button type="submit" className={toggleForm}>
-          {this.state.errorMsg}
-        </button>
-      );
-    } else {
-      return <button type="submit">Sign Up</button>;
+    }
+    else {
+      fetch(this.props.baseURL + '/users/register', {
+        method: 'POST',
+        body: JSON.stringify({
+            username: this.state.username,
+            password: this.state.password,
+        }),
+        headers: {'Content-Type': 'application/json'}
+      }).then((res) => {
+          return res.json();
+      }).then((user) => {
+          this.props.loginUser(user);
+          this.setState({
+              username: "",
+              password: "",
+          });
+      }).catch((err) => {console.error({'Error': err})});
     }
   };
 
-  render() {
-    const { username, password, passwordConfirmation } = this.state;
+  renderError = () => {
+    if (this.state.isError)
+      return (<p>{this.state.errorMsg}</p>);
+  };
 
+  render() {
     return (
       <div className="form-container">
         <h3>Sign Up</h3>
@@ -66,7 +63,7 @@ class SignUp extends Component {
             required
             type="text"
             name="username"
-            value={username}
+            value={this.state.username}
             placeholder="Enter username"
             onChange={this.handleChange}
           />
@@ -74,7 +71,7 @@ class SignUp extends Component {
           <input
             required
             name="password"
-            value={password}
+            value={this.state.password}
             type="password"
             placeholder="Password"
             onChange={this.handleChange}
@@ -83,16 +80,17 @@ class SignUp extends Component {
           <input
             required
             name="passwordConfirmation"
-            value={passwordConfirmation}
+            value={this.state.passwordConfirmation}
             type="password"
             placeholder="Confirm Password"
             onChange={this.handleChange}
           />
-          {this.renderError()}
+          <button type="submit">Sign Up</button>
         </form>
+        {this.renderError()}
       </div>
     );
-  }
-}
+  };
+};
 
-export default SignUp;
+export default withRouter(SignUp);
