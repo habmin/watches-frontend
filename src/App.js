@@ -55,6 +55,15 @@ class App extends Component {
     });
   }
 
+  deletedProduct = (productID) => {
+    const index = this.state.products.findIndex(indexTarget => indexTarget._id === productID);
+    const productsBuffer = [...this.state.products];
+    productsBuffer.splice(index, 1);
+    this.setState({
+      products: productsBuffer
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -73,7 +82,11 @@ class App extends Component {
               this.state.products.map((product) => {
                 return (
                   <Route path={"/" + product._id + "/edit"}>
-                    <ProductEdit baseURL={baseURL} product={product} updateProduct={this.updateProduct}/>
+                    <ProductEdit 
+                      baseURL={baseURL} 
+                      product={product} 
+                      updateProduct={this.updateProduct}
+                      deletedProduct={this.deletedProduct}/>
                   </Route>
                 );
               })

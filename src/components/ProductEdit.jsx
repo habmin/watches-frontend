@@ -14,13 +14,13 @@ class ProductEdit extends Component {
             strap: this.props.product.strap,
             redirect: false 
         }
-    }
+    };
 
     handleChange = (event) => {
         this.setState({
             [event.target.id]: event.target.value
         });
-    }
+    };
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -44,7 +44,18 @@ class ProductEdit extends Component {
                 redirect: true
             });
         }).catch((err) => {console.error({'Error': err})});
-    }
+    };
+    
+    deleteProduct = (eventID) => {
+        fetch(this.props.baseURL + '/watches/' + eventID, {
+            method: 'DELETE',
+        }).then((res) => {
+            this.props.deletedProduct(eventID);
+            this.setState({
+                redirect: true
+            });
+        }).catch((err) => {console.error({'Error': err})});
+    };
 
     render() {
         if (this.state.redirect)
@@ -112,9 +123,10 @@ class ProductEdit extends Component {
                     />
                     <button type='submit' className="save-button">Save</button>
                 </form>
+                <button onClick={() => this.deleteProduct(this.props.product._id)}>Delete</button>
             </div>
-        )
-    }
-}
+        );
+    };
+};
 
 export default withRouter(ProductEdit);
