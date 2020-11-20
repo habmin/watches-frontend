@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import NewProduct from './components/NewProduct.jsx';
 import ShowProduct from './components/ShowProduct.jsx';
 import ProductEdit from './components/ProductEdit.jsx';
-import SignUp from './components/SignUp.jsx'
+import SignUp from './components/SignUp.jsx';
+import SignIn from './components/SignIn.jsx';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 let baseURL;
@@ -40,11 +41,27 @@ class App extends Component {
     this.getProducts();
   };
 
-  loginUser = (user) =>{
-    this.setState({
-      currentUser: user
+  loginUser = (user) => {
+      this.setState({
+        currentUser: user
     });
   };
+
+  logoutUser = () => {
+    try {
+      fetch(baseURL + '/sessions', {
+        method: 'DELETE',
+      }).then((res) => {
+        this.setState({
+          currentUser: null
+        });
+      });
+    }
+    catch(err) {
+      console.log("an error!?")
+      console.log(err);
+    }
+  }
 
   addProduct = (newProduct) => {
     const productsBuffer = [...this.state.products];
@@ -84,9 +101,22 @@ class App extends Component {
             }
             <Link to="/">View Watches</Link>
             <Link to="/new">Add Watch</Link>
-            <Link to="/signup">Sign Up</Link>
+            
+            {
+              this.state.currentUser
+                ? <Link to="/signout" onClick={this.logoutUser}>Sign Out</Link>
+                : 
+                  <div>
+                    <Link to="/signup">Sign Up</Link>
+                    <Link to="/signin">Sign In</Link>
+                  </div>
+            }
+
           </div>
           <Switch>
+            <Route path='/signin'>
+              <SignIn baseURL={baseURL} loginUser={this.loginUser}/>
+            </Route>
             <Route path='/signup'>
               <SignUp baseURL={baseURL} loginUser={this.loginUser}/>
             </Route>

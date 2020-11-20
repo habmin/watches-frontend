@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import { withRouter, Redirect} from 'react-router-dom';
 
 class SignIn extends Component {
     constructor(props) {
@@ -14,49 +14,47 @@ class SignIn extends Component {
 
     handleChange = event => {
         this.setState({
-            [event.target.name]: event.target.value,
-            isError: false,
-            errorMsg: ''
-        })
+            [event.target.name]: event.target.value
+        });
     }
 
     onSignIn = event => {
-        event.preventDefault()
-
-        const { history, setUser } = this.props
-
-        signIn(this.state)
-            .then(res => {
-                setUser(res.user)
-            })
-            .then(() => history.push('/'))
-            .catch(error => {
-                console.error(error)
-                this.setState({
-                    isError: true,
-                    errorMsg: 'Invalid Credentials',
-                    username: '',
-                    password: ''
-                })
-            })
+        event.preventDefault();
+        fetch(this.props.baseURL + '/sessions', {
+            method: 'POST',
+            body: JSON.stringify({
+                username: this.state.username,
+                password: this.state.password,
+            }),
+            headers: {'Content-Type': 'application/json'}
+      }).then((res) => {
+          return res.json();
+      }).then((user) => {
+        console.log(user);
+        if (user.error) {
+          this.setState({
+            errorMsg: `${user.error}`,
+            isError: true
+          });
+        }
+        else {
+          this.props.loginUser(user);
+          this.setState({
+              redirect: true
+          });
+        }
+      }).catch((err) => {console.error({'Error': err})});
     }
 
     renderError = () => {
-        const toggleForm = this.state.isError ? 'danger' : ''
-        if (this.state.isError) {
-            return (
-                <button type="submit" className={toggleForm}>
-                    {this.state.errorMsg}
-                </button>
-            )
-        } else {
-            return <button type="submit">Sign In</button>
-        }
-    }
+        if (this.state.isError)
+            return (<p>{this.state.errorMsg}</p>);
+    };
+
 
     render() {
-        const { username, password } = this.state
-
+        if (this.state.redirect)
+            return <Redirect to='/' />;
         return (
             <div className="form-container">
                 <h3>Sign In</h3>
@@ -66,7 +64,6 @@ class SignIn extends Component {
                         required
                         type="text"
                         name="username"
-                        value={username}
                         placeholder="Enter Username"
                         onChange={this.handleChange}
                     />
@@ -74,11 +71,11 @@ class SignIn extends Component {
                     <input
                         required
                         name="password"
-                        value={password}
                         type="password"
                         placeholder="Password"
                         onChange={this.handleChange}
                     />
+                    <button type="submit">Sign In</button>
                     {this.renderError()}
                 </form>
             </div>
@@ -86,4 +83,5 @@ class SignIn extends Component {
     }
 }
 
-export default SignIn
+
+export default withRouter(SignIn);
