@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter, Redirect} from 'react-router-dom';
 
 class NewProduct extends Component {
     constructor(props) {
@@ -10,7 +11,8 @@ class NewProduct extends Component {
             img: "",
             material: "",
             color: "",
-            strap: ""
+            strap: "",
+            redirect: false
         }
     }
 
@@ -39,26 +41,24 @@ class NewProduct extends Component {
         }).then((product) => {
             this.props.addProduct(product);
             this.setState({
-                name: "",
-                price: "",
-                description: "",
-                img: "",
-                material: "",
-                color: "",
-                strap: ""
+                redirect: true
             });
         }).catch((err) => {console.error({'Error': err})});
     }
 
     render() {
+        if (this.state.redirect)
+            return <Redirect to='/' />;
         return (
             <form onSubmit={event => this.submitHandler(event)}>
                 <label htmlFor="name">Name:</label>
                 <input type="text" id="name"
+                    required
                     onChange={event => this.handleChange(event)}
                     value={this.state.name}/>
                 <label htmlFor="price">Price:</label>
                 <input type="number" step="0.01" id="price"
+                    required
                     onChange={event => this.handleChange(event)}
                     value={this.state.price}/>
                 <label htmlFor="description">Description:</label>
@@ -87,4 +87,4 @@ class NewProduct extends Component {
     };
 };
 
-export default NewProduct
+export default withRouter(NewProduct);
