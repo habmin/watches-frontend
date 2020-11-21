@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import NewProduct from './components/NewProduct.jsx';
 import ShowProduct from './components/ShowProduct.jsx';
 import ProductEdit from './components/ProductEdit.jsx';
+import SignUp from './components/SignUp.jsx';
+import SignIn from './components/SignIn.jsx';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 let baseURL;
@@ -14,7 +16,8 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      products: []
+      products: [],
+      currentUser: null
     }
   }
 
@@ -37,6 +40,28 @@ class App extends Component {
   componentDidMount() {
     this.getProducts();
   };
+
+  loginUser = (user) => {
+      this.setState({
+        currentUser: user
+    });
+  };
+
+  logoutUser = () => {
+    try {
+      fetch(baseURL + '/sessions', {
+        method: 'DELETE',
+      }).then((res) => {
+        this.setState({
+          currentUser: null
+        });
+      });
+    }
+    catch(err) {
+      console.log("an error!?")
+      console.log(err);
+    }
+  }
 
   addProduct = (newProduct) => {
     const productsBuffer = [...this.state.products];
@@ -70,26 +95,56 @@ class App extends Component {
         <Router>
           <div className="header">
             {
-            /* make this a nav bar
-            user sign in
-            */
+            /* nav section begin */
             }
             <Link to="/">View Watches</Link>
-            <Link to="/new">Add Watch</Link>
+            {
+              this.state.currentUser && this.state.currentUser.username === "admin"
+              ? <Link to="/new">Add Watch</Link>
+              : <></>
+            }
+            {
+              this.state.currentUser
+                ? <Link to="/signout" onClick={this.logoutUser}>Sign Out</Link>
+                : 
+                  <div>
+                    <Link to="/signup">Sign Up</Link>
+                    <Link to="/signin">Sign In</Link>
+                  </div>
+            }
+            {
+            /* nav section end */
+            }
           </div>
           <Switch>
+            <Route path='/signin'>
+              <SignIn baseURL={baseURL} loginUser={this.loginUser}/>
+            </Route>
+            <Route path='/signup'>
+              <SignUp baseURL={baseURL} loginUser={this.loginUser}/>
+            </Route>
             {
-              this.state.products.map((product) => {
-                return (
-                  <Route path={"/" + product._id + "/edit"}>
-                    <ProductEdit 
-                      baseURL={baseURL} 
-                      product={product} 
-                      updateProduct={this.updateProduct}
-                      deletedProduct={this.deletedProduct}/>
-                  </Route>
-                );
-              })
+              this.state.currentUser && this.state.currentUser.username === "admin"
+              ?
+                this.state.products.map((product) => {
+                  return (
+                    <Route path={"/" + product._id + "/edit"}>
+                      <ProductEdit 
+                        baseURL={baseURL} 
+                        product={product} 
+                        updateProduct={this.updateProduct}
+                        deletedProduct={this.deletedProduct}/>
+                    </Route>
+                  );
+                })
+              :
+                this.state.products.map((product) => {
+                  return (
+                    <Route path={"/" + product._id + "/edit"}>
+                      <p>Unauthorized Access</p>
+                    </Route>
+                  );
+                })
             }
             {
               this.state.products.map((product) => {
@@ -99,6 +154,17 @@ class App extends Component {
                   </Route>
                 );
               })
+            }
+            {
+              this.state.currentUser && this.state.currentUser.username === "admin"
+              ?
+                <Route path='/new'>
+                  <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
+                </Route>
+              :
+                <Route path='/new'>
+                  <p>Unauthorized Access</p>
+                </Route>
             }
             <Route path='/new'>
               <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
@@ -110,7 +176,11 @@ class App extends Component {
                     <div className="product" key={product._id}>
                       <h1>{product.name}</h1>
                       <img src={product.img} />
-                      <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                      {
+                        this.state.currentUser && this.state.currentUser.username === "admin"
+                        ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                        : <></>
+                      }
                       <Link to={"/" + product._id}>More Details</Link>
                     </div>
                   )
