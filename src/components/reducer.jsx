@@ -1,6 +1,27 @@
-// import React, { createContext, useReducer } from 'react';
-// import { CartReducer, sumItems } from './CartReducer';
-//
+import React, { createContext, useReducer } from 'react';
+import { CartReducer, sumItems } from './CartReducer';
+
+/*combines all reducers*/
+
+rootReducer = combineReducers({potato: counterReducer, tomato: tomatoReducer})
+// This would produce the following state object
+{
+  potato: {
+    // ... potatoes, and other state managed by the potatoReducer ...
+  },
+  tomato: {
+    // ... tomatoes, and other state managed by the tomatoReducer, maybe some nice sauce? ...
+  }
+}
+
+
+
+
+
+
+
+
+
 //
 //
 //

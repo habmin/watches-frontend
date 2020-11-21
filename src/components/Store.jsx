@@ -6,7 +6,10 @@ import React, { createContext, PureComponent, useReducer } from 'react';
 import { CartReducer, sumItems } from './CartReducer';
 
 const store = configureStore({ reducer: counterReducer })
+/*
+this pulls all data from card and adds actions
 
+*/
 
 // ACTIONS
 const addToCart = item => {
@@ -33,6 +36,9 @@ const checkOut = item => {
     payload: item
   }
 }
+
+
+
 
 //reducer
 function counterReducer(state = { value: 0 }, action) {
