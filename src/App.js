@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 let baseURL;
 if (process.env.NODE_ENV === 'development')
-  baseURL = 'http://localhost:3005';
+  baseURL = 'http://localhost:3008';
 else
   baseURL = 'heroku/depploment URL placehorder';
 
@@ -95,9 +95,7 @@ class App extends Component {
         <Router>
           <div className="header">
             {
-            /* make this a nav bar
-            user sign in
-            */
+            /* nav section begin */
             }
             <Link to="/">View Watches</Link>
             <Link to="/new">Add Watch</Link>
@@ -111,7 +109,9 @@ class App extends Component {
                     <Link to="/signin">Sign In</Link>
                   </div>
             }
-
+            {
+            /* nav section end */
+            }
           </div>
           <Switch>
             <Route path='/signin'>
@@ -121,17 +121,27 @@ class App extends Component {
               <SignUp baseURL={baseURL} loginUser={this.loginUser}/>
             </Route>
             {
-              this.state.products.map((product) => {
-                return (
-                  <Route path={"/" + product._id + "/edit"}>
-                    <ProductEdit 
-                      baseURL={baseURL} 
-                      product={product} 
-                      updateProduct={this.updateProduct}
-                      deletedProduct={this.deletedProduct}/>
-                  </Route>
-                );
-              })
+              this.state.currentUser && this.state.currentUser.username === "admin"
+              ?
+                this.state.products.map((product) => {
+                  return (
+                    <Route path={"/" + product._id + "/edit"}>
+                      <ProductEdit 
+                        baseURL={baseURL} 
+                        product={product} 
+                        updateProduct={this.updateProduct}
+                        deletedProduct={this.deletedProduct}/>
+                    </Route>
+                  );
+                })
+              :
+                this.state.products.map((product) => {
+                  return (
+                    <Route path={"/" + product._id + "/edit"}>
+                      <p>Unauthorized Access</p>
+                    </Route>
+                  );
+                })
             }
             {
               this.state.products.map((product) => {
@@ -141,6 +151,17 @@ class App extends Component {
                   </Route>
                 );
               })
+            }
+            {
+              this.state.currentUser && this.state.currentUser.username === "admin"
+              ?
+                <Route path='/new'>
+                  <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
+                </Route>
+              :
+                <Route path='/new'>
+                  <p>Unauthorized Access</p>
+                </Route>
             }
             <Route path='/new'>
               <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
