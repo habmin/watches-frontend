@@ -11,25 +11,25 @@ const store = configureStore({ reducer: counterReducer })
 // ACTIONS
 const addToCart = item => {
   return {
-    type: 'addinging item to cart',
+    type: 'addItemToCart',
     payload: item
   }
 }
 const removingItemFromCart = item => {
   return {
-    type: 'removing item from cart',
+    type: 'removingItemFromCart',
     payload: item
   }
 }
 const clearingAllItems = item => {
   return {
-    type: 'removing all items from cart',
+    type: 'removingAllFromCart',
     payload: item
   }
 }
 const checkOut = item => {
   return {
-    type: 'checkout items',
+    type: 'checkoutItems',
     payload: item
   }
 }
@@ -58,12 +58,13 @@ store.subscribe(() => console.log(store.getState()))
 
 // The only way to mutate the internal state is to dispatch an action.
 // The actions can be serialized, logged or stored and later replayed.
-store.dispatch({ type: 'addItemToCart' })
+store.dispatch({ type: 'addItemToCart'})
 // {value: 1}
-store.dispatch({ type: 'removingItemFromCart' })
+store.dispatch({ type: 'removingItemFromCart'})
 // {value: 2}
-store.dispatch({ type: 'removingAllFromCart ' })
+store.dispatch({ type: 'removingAllFromCart'})
 // {value: 3}
+store.dispatch({ type: 'checkoutItems'})
 
 
 
