@@ -98,8 +98,11 @@ class App extends Component {
             /* nav section begin */
             }
             <Link to="/">View Watches</Link>
-            <Link to="/new">Add Watch</Link>
-            
+            {
+              this.state.currentUser && this.state.currentUser.username === "admin"
+              ? <Link to="/new">Add Watch</Link>
+              : <></>
+            }
             {
               this.state.currentUser
                 ? <Link to="/signout" onClick={this.logoutUser}>Sign Out</Link>
@@ -173,7 +176,11 @@ class App extends Component {
                     <div className="product" key={product._id}>
                       <h1>{product.name}</h1>
                       <img src={product.img} />
-                      <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                      {
+                        this.state.currentUser && this.state.currentUser.username === "admin"
+                        ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                        : <></>
+                      }
                       <Link to={"/" + product._id}>More Details</Link>
                     </div>
                   )
