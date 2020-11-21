@@ -16,22 +16,21 @@ class App extends Component {
     super(props);
     this.state = {
       products: [],
-      cartItems: [],
+      cartItems: []
     }
   }
+  // pass the event as a paremeter
+  // this.set state of cart item to
+  // event .currenttarget or id
+  // push and set state to cart items array
+  // then call the function below by calling the event.
   cartFunction = (product) => {
-    const cartItems = this.state.cartItems.slice();
-    let alreadyInCart = false
-    cartItems.forEach((item ) => {
-      if (item._id === product._id) {
-        item.count++;
-        alreadyInCart = true;
-      }
+        let itemsInCart = [...this.state.cartItems];
+        itemsInCart.push(product)
+        this.setState({
+          cartItems: itemsInCart
     })
-    if(!alreadyInCart) {
-      cartItems.push({...product, count: 1})
-    }
-    this.setState({ cartItems });
+    console.log(this.state.cartItems)
   };
 
   getProducts = async () => {
@@ -128,7 +127,7 @@ class App extends Component {
                         <h1>{product.name}</h1>
                         <img src={product.img} alt={`${this.props.name} watches`} />
                         <h3>{product.price}</h3>
-                        <button onClick={() => this.props.cartFunction(product)}>add</button>
+                        <button onClick={() => this.cartFunction(product)}>add</button>
                         <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
                         <Link to={"/" + product._id}>More Details</Link>
                       </div>
