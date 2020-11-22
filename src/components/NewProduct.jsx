@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect} from 'react-router-dom';
-import { Button, Form } from 'semantic-ui-react'
+import { Button, Input, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 import '../App.css'
 class NewProduct extends Component {
     constructor(props) {
@@ -51,8 +51,10 @@ class NewProduct extends Component {
         if (this.state.redirect)
             return <Redirect to='/' />;
         return (
+          <Grid centered columns={5}>
+          <Grid.Column>
             <Form className="form" onSubmit={event => this.submitHandler(event)}>
-              <Form.Group unstackable widths={3}>
+              <Form.Group className="innerFormOne" unstackable widths={1}>
                 <Form.Input  type="text" id="name"
                     label= "Name:"
                     placeholder="Name"
@@ -60,7 +62,7 @@ class NewProduct extends Component {
                     onChange={event => this.handleChange(event)}
                     value={this.state.name}/>
                 </Form.Group>
-                <Form.Group unstackable widths={3}>
+                <Form.Group unstackable widths={1}>
                   <Form.Input type="number" step="0.01" id="price"
                     label= "Price:"
                     placeholder="Price"
@@ -68,35 +70,35 @@ class NewProduct extends Component {
                     onChange={event => this.handleChange(event)}
                     value={this.state.price}/>
                 </Form.Group>
-                <Form.Group unstackable widths={3}>
+                <Form.Group unstackable widths={1}>
                   <Form.Input type="text" id="description"
                     label="Description:"
                     placeholder="Description"
                     onChange={event => this.handleChange(event)}
                     value={this.state.description}/>
                 </Form.Group>
-                <Form.Group unstackable widths={3}>
+                <Form.Group unstackable widths={1}>
                   <Form.Input type="text" id="img"
                     label="IMG Source:"
                     placeholder="IMG Source"
                     onChange={event => this.handleChange(event)}
                     value={this.state.img}/>
                 </Form.Group>
-                <Form.Group unstackable widths={3}>
+                <Form.Group unstackable widths={1}>
                   <Form.Input type="text" id="material"
                     label="Material:"
                     placeholder="Material"
                     onChange={event => this.handleChange(event)}
                     value={this.state.material}/>
                 </Form.Group>
-                <Form.Group unstackable widths={3}>
+                <Form.Group unstackable widths={1}>
                   <Form.Input type="text" id="color"
                     label="Color:"
                     placeholder="Color"
                     onChange={event => this.handleChange(event)}
                     value={this.state.color}/>
                 </Form.Group>
-                <Form.Group unstackable widths={3}>
+                <Form.Group unstackable widths={1}>
                   <Form.Input type="text" id="strap"
                     label="Strap:"
                     placeholder="Strap"
@@ -106,6 +108,8 @@ class NewProduct extends Component {
                    <Form.Checkbox label='I agree to the Terms and Conditions' />
                 <Button type="submit">Submit</Button>
             </Form>
+            </Grid.Column>
+            </Grid>
         );
     };
 };
