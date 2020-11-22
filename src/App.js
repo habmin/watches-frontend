@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NewProduct from './components/NewProduct.jsx';
 import ShowProduct from './components/ShowProduct.jsx';
 import ProductEdit from './components/ProductEdit.jsx';
+import Search from './components/Search.jsx';
 import SignUp from './components/SignUp.jsx';
 import SignIn from './components/SignIn.jsx';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
@@ -17,12 +18,13 @@ class App extends Component {
     super(props);
     this.state = {
       products: [],
+      searchResults: null,
       currentUser: null
     }
   }
 
   getProducts = async () => {
-    try{
+    try {
       await fetch(baseURL + "/watches").then(res => {
         return res.json();
       }).then(productData => {
@@ -89,6 +91,18 @@ class App extends Component {
     });
   }
 
+  searchResults = (results) => {
+    this.setState({
+      searchResults: results
+    });
+  };
+
+  clearResults = () => {
+    this.setState({
+      searchResults: null
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -117,6 +131,7 @@ class App extends Component {
               /* nav section end */
               }
             </div>
+            <Search baseURL={baseURL} searchResults={this.searchResults} clearResults={this.clearResults}/>
             <Switch>
               <Route path='/signin'>
                 <SignIn baseURL={baseURL} loginUser={this.loginUser}/>
