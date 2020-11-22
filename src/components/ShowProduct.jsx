@@ -2,13 +2,13 @@ import React from 'react';
 
 function ShowProduct(props) {
   return (
-    <div className="Show">
-      <h1>{props.product.name}</h1>
-      <img src={props.product.img} />
-      <table>
-        <tr>
-          <th>Description</th>
-          <th>Price</th>
+    <div className="show">
+      <h1 className="name">{props.product.name}</h1>
+      <img className="image"src={props.product.img} />
+      <table className="ShowProductTable">
+        <tr className="ShowProductContainer">
+          <th className="ShowProductDescription">Description</th>
+          <th className="ShowProductPrice">Price</th>
         </tr>
         <tr>
 

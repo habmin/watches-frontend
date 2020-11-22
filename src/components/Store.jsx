@@ -65,11 +65,11 @@
 //
 //
 //
-//
-//
-// // let store = createStore(counterReducer)
-//
-//
+
+
+// let store = createStore(counterReducer)
+
+
 //
 // store.subscribe(() => console.log(store.getState()))
 //
@@ -90,11 +90,11 @@
 //
 //
 //
-//
-//
-//
-//
-//
+
+
+
+
+
 //
 //
 //

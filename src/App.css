@@ -2,10 +2,67 @@ img {
   height: 200px;
   width: 200px;
 }
-.form {
+/*Nav Bar*/
+.navBarLi a:hover {
+  background-color: #485265;
+  color: #fcfaf9;
+
+}
+.navBarLi a {
+  color: white;
+  text-align: center;
+  float: left;
+  padding: 0px 15px 0px 10px;
+  font-family: 'Poiret One', cursive;
+  margin: 0%;
+}
+.searchBar {
+  font-family: 'Raleway Dots', Poiret One;
+  float: left;
+  color: #fcfaf9;
+  text-align: center;
+  margin-left: 5%;
+}
+.title {
+  font-family: 'Raleway Dots', Poiret One;
+  color: #fcfaf9;
+  margin-left: 45%;
+}
+.navBar {
+  overflow: hidden;
+  list-style-type: none;
+  background-color: #181818;
+  padding: 20px 0px 5px 10px;
+}
+/*END NAV BAR*/
+/*FORM*/
+
+.formContainer {
+  width: 35%;
+  padding: 30px 170px 30px 0px;
+  background-color: #e9ecef;
+  margin: 5% auto 5% auto;
+  border: solid 1px #adb5bd;
+  border-radius: 5px;
+}
+.innerFormOne {
+  color: white;
+}
+/* .form {
   margin-top: 30px;
-  padding: 20px;
 }
 .innerFormOne {
 
 }
+.name {
+  margin: auto;
+}
+.image {
+  margin: 0px;
+}
+.show {
+  margin: auto;
+}
+.ShowProductTable {
+  margin: auto;
+} */

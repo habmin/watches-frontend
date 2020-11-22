@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { withRouter, Redirect} from 'react-router-dom';
 import { Button, Input, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 import '../App.css'
+
+
 class NewProduct extends Component {
     constructor(props) {
         super(props);
@@ -51,6 +53,7 @@ class NewProduct extends Component {
         if (this.state.redirect)
             return <Redirect to='/' />;
         return (
+          <div className="formContainer">
           <Grid centered columns={5}>
           <Grid.Column>
             <Form className="form" onSubmit={event => this.submitHandler(event)}>
@@ -105,11 +108,11 @@ class NewProduct extends Component {
                     onChange={event => this.handleChange(event)}
                     value={this.state.strap}/>
                 </Form.Group>
-                   <Form.Checkbox label='I agree to the Terms and Conditions' />
                 <Button type="submit">Submit</Button>
             </Form>
             </Grid.Column>
             </Grid>
+            </div>
         );
     };
 };

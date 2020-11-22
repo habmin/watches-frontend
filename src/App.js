@@ -86,8 +86,21 @@ class App extends Component {
             user sign in
             */
             }
-            <Link to="/">View Watches</Link>
-            <Link to="/new">Add Watch</Link>
+            <nav className="navBar">
+            <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Raleway+Dots&display=swap');
+            </style>
+
+              <li className="navBarLi"><Link to="/">HOME</Link></li>
+              <li className="navBarLi"><Link to="/new">ADD INVENTORY</Link></li>
+              <li className="searchBar">|   SEARCH</li>
+              <li><h1 className="title">Fifth Hour</h1></li>
+            </nav>
+            <header>
+
+            </header>
+
           </div>
           <Switch>
             {
