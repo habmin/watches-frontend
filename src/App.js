@@ -195,7 +195,11 @@ class App extends Component {
                 this.state.products.map((product) => {
                   return (
                     <Route exact path={"/" + product._id}>
-                      <ShowProduct baseURL={baseURL} product={product}/>
+                      <ShowProduct 
+                        baseURL={baseURL} 
+                        product={product} 
+                        currentUser={this.state.currentUser}
+                        addToCart={this.addToCart}/>
                     </Route>
                   );
                 })
