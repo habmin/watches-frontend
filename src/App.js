@@ -188,9 +188,11 @@ class App extends Component {
               <Route path='/'>
                 <div className="products-display">
                   {
-                    this.state.products.map((product) => {
-                      return (
-                        <div className="product" key={product._id}>
+                    this.state.searchResults
+                    ?
+                      this.state.searchResults.map((product) => {
+                        return (
+                          <div className="product" key={product._id}>
                           <h1>{product.name}</h1>
                           <img src={product.img} />
                           {
@@ -200,8 +202,23 @@ class App extends Component {
                           }
                           <Link to={"/" + product._id}>More Details</Link>
                         </div>
-                      )
-                    })
+                        )
+                      })
+                    :
+                      this.state.products.map((product) => {
+                        return (
+                          <div className="product" key={product._id}>
+                          <h1>{product.name}</h1>
+                          <img src={product.img} />
+                          {
+                            this.state.currentUser && this.state.currentUser.username === "admin"
+                            ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                            : <></>
+                          }
+                          <Link to={"/" + product._id}>More Details</Link>
+                        </div>
+                        )
+                      })
                   }
                 </div>
               </Route>
