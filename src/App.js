@@ -113,6 +113,15 @@ class App extends Component {
     });
   }
 
+  removeCartItem = (item) => {
+    const index = this.state.cart.findIndex(indexTarget => indexTarget._id === item);
+    const cartBuffer = [...this.state.cart];
+    cartBuffer.splice(index, 1);
+    this.setState({
+      cart: cartBuffer
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -153,7 +162,11 @@ class App extends Component {
                 <SignUp baseURL={baseURL} loginUser={this.loginUser}/>
               </Route>
               <Route path='/cart'>
-                <Cart baseURL={baseURL} cart={this.state.cart} checkoutCart={this.checkoutCart}/>
+                <Cart 
+                  baseURL={baseURL} 
+                  cart={this.state.cart} 
+                  checkoutCart={this.checkoutCart}
+                  removeCartItem={this.removeCartItem}/>
               </Route>
               {
                 this.state.currentUser && this.state.currentUser.username === "admin"

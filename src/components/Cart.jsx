@@ -30,6 +30,16 @@ class Cart extends Component {
         });
     }
 
+    removeItem = (item) => {
+        const index = this.state.cart.findIndex(indexTarget => indexTarget._id === item);
+        const cartBuffer = [...this.state.cart];
+        cartBuffer.splice(index, 1);
+        this.setState({
+          cart: cartBuffer
+        });
+        this.props.removeCartItem(item);
+    }
+
     render() {
         let total = 0;
         this.state.cart.forEach(item => {
@@ -50,6 +60,7 @@ class Cart extends Component {
                                 <tr>
                                     <td>{item.name}</td>
                                     <td>{item.price}</td>
+                                    <td><button type="button" onClick={() => {this.removeItem(item)}}>Remove Item</button></td>
                                 </tr>
                             )
                         })
