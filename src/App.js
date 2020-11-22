@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import NewProduct from './components/NewProduct.jsx';
 import ShowProduct from './components/ShowProduct.jsx';
 import ProductEdit from './components/ProductEdit.jsx';
+import Search from './components/Search.jsx';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 let baseURL;
 if (process.env.NODE_ENV === 'development')
-  baseURL = 'http://localhost:3005';
+  baseURL = 'http://localhost:3008';
 else
   baseURL = 'heroku/depploment URL placehorder';
 
@@ -14,12 +15,13 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      products: []
+      products: [],
+      searchResults: null
     }
   }
 
   getProducts = async () => {
-    try{
+    try {
       await fetch(baseURL + "/watches").then(res => {
         return res.json();
       }).then(productData => {
@@ -64,6 +66,18 @@ class App extends Component {
     });
   }
 
+  searchResults = (results) => {
+    this.setState({
+      searchResults: results
+    });
+  };
+
+  clearResults = () => {
+    this.setState({
+      searchResults: null
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -77,6 +91,7 @@ class App extends Component {
             <Link to="/">View Watches</Link>
             <Link to="/new">Add Watch</Link>
           </div>
+          <Search baseURL={baseURL} searchResults={this.searchResults} clearResults={this.clearResults}/>
           <Switch>
             {
               this.state.products.map((product) => {
@@ -94,7 +109,7 @@ class App extends Component {
             {
               this.state.products.map((product) => {
                 return (
-                  <Route exact path={"/" + product._id}>
+                  <Route exact path={"/id/" + product._id}>
                     <ShowProduct baseURL={baseURL} product={product}/>
                   </Route>
                 );
@@ -105,16 +120,29 @@ class App extends Component {
             </Route>
             <Route path='/'>
               {
-                this.state.products.map((product) => {
-                  return (
-                    <div className="product" key={product._id}>
-                      <h1>{product.name}</h1>
-                      <img src={product.img} />
-                      <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
-                      <Link to={"/" + product._id}>More Details</Link>
-                    </div>
-                  )
-                })
+                this.state.searchResults
+                ?
+                  this.state.searchResults.map((product) => {
+                    return (
+                      <div className="product" key={product._id}>
+                        <h1>{product.name}</h1>
+                        <img src={product.img} />
+                        <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                        <Link to={"/id/" + product._id}>More Details</Link>
+                      </div>
+                    )
+                  })
+                :
+                  this.state.products.map((product) => {
+                    return (
+                      <div className="product" key={product._id}>
+                        <h1>{product.name}</h1>
+                        <img src={product.img} />
+                        <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                        <Link to={"/id/" + product._id}>More Details</Link>
+                      </div>
+                    )
+                  })
               }
             </Route>
           </Switch>
