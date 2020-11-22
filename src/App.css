@@ -35,6 +35,15 @@ img {
   padding: 20px 0px 5px 10px;
 }
 /*END NAV BAR*/
+
+/*MAIN HEADER*/
+.mainHeader {
+  text-align: center;
+  margin: 40px 10px 10px 10px;
+}
+
+/*MAIN HEADER*/
+
 /*FORM*/
 
 .formContainer {
@@ -45,12 +54,17 @@ img {
   border: solid 1px #adb5bd;
   border-radius: 5px;
 }
-.innerFormOne {
-  color: white;
+
+/*END FORM*/
+
+ .product {
+  margin-top: 50px;
 }
-/* .form {
-  margin-top: 30px;
+.cards {
+  display: inline;
+  background-color: red;
 }
+/*
 .innerFormOne {
 
 }

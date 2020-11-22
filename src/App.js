@@ -5,7 +5,7 @@ import NewProduct from './components/NewProduct.jsx';
 import Store from './components/Store.jsx';
 import ProductEdit from './components/ProductEdit.jsx';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { Card, Button, Input, Image, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 
 
 let baseURL;
@@ -97,10 +97,6 @@ class App extends Component {
               <li className="searchBar">|   SEARCH</li>
               <li><h1 className="title">Fifth Hour</h1></li>
             </nav>
-            <header>
-
-            </header>
-
           </div>
           <Switch>
             {
@@ -128,21 +124,26 @@ class App extends Component {
             <Route path='/new'>
               <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
             </Route>
-
             <Route path='/'>
-               <div>
+               <div className="cards">
                 {
+
                   this.state.products.map((product) => {
                     return (
-                      <div className="product" key={product._id}>
-                        <header>Go to Cart</header>
-                        <h1>{product.name}</h1>
-                        <img src={product.img} alt={`${this.props.name} watches`} />
-                        <h3>{product.price}</h3>
-                        <button onClick={() => this.cartFunction(product)}>add</button>
+                      <Card className="product" key={product._id}>
+                      <Card.Content>
+                        <Card.Header>{product.name}</Card.Header>
+                        <Image src={product.img} alt={`${this.props.name} watches`} wrapped ui={false} />
+                        <Card.Description>
+                        <h3>$ {product.price}</h3>
+                        <Button onClick={() => this.cartFunction(product)}>ADD</Button>
+                        </Card.Description>
+                        </Card.Content>
+                        <Card.Content extra>
                         <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
                         <Link to={"/" + product._id}>More Details</Link>
-                      </div>
+                       </Card.Content>
+                      </Card>
                     )
                   })
                 }
