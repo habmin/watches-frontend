@@ -3,20 +3,23 @@ import NewProduct from './components/NewProduct.jsx';
 import ShowProduct from './components/ShowProduct.jsx';
 import ProductEdit from './components/ProductEdit.jsx';
 import Search from './components/Search.jsx';
+import SignUp from './components/SignUp.jsx';
+import SignIn from './components/SignIn.jsx';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 let baseURL;
 if (process.env.NODE_ENV === 'development')
   baseURL = 'http://localhost:3008';
 else
-  baseURL = 'heroku/depploment URL placehorder';
+  baseURL = 'heroku/deployment URL placeholder';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       products: [],
-      searchResults: null
+      searchResults: null,
+      currentUser: null
     }
   }
 
@@ -39,6 +42,28 @@ class App extends Component {
   componentDidMount() {
     this.getProducts();
   };
+
+  loginUser = (user) => {
+      this.setState({
+        currentUser: user
+    });
+  };
+
+  logoutUser = () => {
+    try {
+      fetch(baseURL + '/sessions', {
+        method: 'DELETE',
+      }).then((res) => {
+        this.setState({
+          currentUser: null
+        });
+      });
+    }
+    catch(err) {
+      console.log("an error!?")
+      console.log(err);
+    }
+  }
 
   addProduct = (newProduct) => {
     const productsBuffer = [...this.state.products];
@@ -82,70 +107,106 @@ class App extends Component {
     return (
       <div className="App">
         <Router>
-          <div className="header">
-            {
-            /* make this a nav bar
-            user sign in
-            */
-            }
-            <Link to="/">View Watches</Link>
-            <Link to="/new">Add Watch</Link>
-          </div>
-          <Search baseURL={baseURL} searchResults={this.searchResults} clearResults={this.clearResults}/>
-          <Switch>
-            {
-              this.state.products.map((product) => {
-                return (
-                  <Route path={"/" + product._id + "/edit"}>
-                    <ProductEdit 
-                      baseURL={baseURL} 
-                      product={product} 
-                      updateProduct={this.updateProduct}
-                      deletedProduct={this.deletedProduct}/>
-                  </Route>
-                );
-              })
-            }
-            {
-              this.state.products.map((product) => {
-                return (
-                  <Route exact path={"/id/" + product._id}>
-                    <ShowProduct baseURL={baseURL} product={product}/>
-                  </Route>
-                );
-              })
-            }
-            <Route path='/new'>
-              <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
-            </Route>
-            <Route path='/'>
+          <div>
+            <div className="header">
               {
-                this.state.searchResults
+              /* nav section begin */
+              }
+              <Link to="/">View Watches</Link>
+              {
+                this.state.currentUser && this.state.currentUser.username === "admin"
+                ? <Link to="/new">Add Watch</Link>
+                : <></>
+              }
+              {
+                this.state.currentUser
+                  ? <Link to="/signout" onClick={this.logoutUser}>Sign Out</Link>
+                  : 
+                    <div>
+                      <Link to="/signup">Sign Up</Link>
+                      <Link to="/signin">Sign In</Link>
+                    </div>
+              }
+              {
+              /* nav section end */
+              }
+            </div>
+            <Search baseURL={baseURL} searchResults={this.searchResults} clearResults={this.clearResults}/>
+            <Switch>
+              <Route path='/signin'>
+                <SignIn baseURL={baseURL} loginUser={this.loginUser}/>
+              </Route>
+              <Route path='/signup'>
+                <SignUp baseURL={baseURL} loginUser={this.loginUser}/>
+              </Route>
+              {
+                this.state.currentUser && this.state.currentUser.username === "admin"
                 ?
-                  this.state.searchResults.map((product) => {
+                  this.state.products.map((product) => {
                     return (
-                      <div className="product" key={product._id}>
-                        <h1>{product.name}</h1>
-                        <img src={product.img} />
-                        <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
-                        <Link to={"/id/" + product._id}>More Details</Link>
-                      </div>
-                    )
+                      <Route path={"/" + product._id + "/edit"}>
+                        <ProductEdit 
+                          baseURL={baseURL} 
+                          product={product} 
+                          updateProduct={this.updateProduct}
+                          deletedProduct={this.deletedProduct}/>
+                      </Route>
+                    );
                   })
                 :
                   this.state.products.map((product) => {
                     return (
-                      <div className="product" key={product._id}>
-                        <h1>{product.name}</h1>
-                        <img src={product.img} />
-                        <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
-                        <Link to={"/id/" + product._id}>More Details</Link>
-                      </div>
-                    )
+                      <Route path={"/" + product._id + "/edit"}>
+                        <p>Unauthorized Access</p>
+                      </Route>
+                    );
                   })
               }
-            </Route>
-          </Switch>
+              {
+                this.state.products.map((product) => {
+                  return (
+                    <Route exact path={"/" + product._id}>
+                      <ShowProduct baseURL={baseURL} product={product}/>
+                    </Route>
+                  );
+                })
+              }
+              {
+                this.state.currentUser && this.state.currentUser.username === "admin"
+                ?
+                  <Route path='/new'>
+                    <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
+                  </Route>
+                :
+                  <Route path='/new'>
+                    <p>Unauthorized Access</p>
+                  </Route>
+              }
+              <Route path='/new'>
+                <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
+              </Route>
+              <Route path='/'>
+                <div className="products-display">
+                  {
+                    this.state.products.map((product) => {
+                      return (
+                        <div className="product" key={product._id}>
+                          <h1>{product.name}</h1>
+                          <img src={product.img} />
+                          {
+                            this.state.currentUser && this.state.currentUser.username === "admin"
+                            ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                            : <></>
+                          }
+                          <Link to={"/" + product._id}>More Details</Link>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+              </Route>
+            </Switch>
+          </div>
         </Router>
       </div>
     );
