@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect} from 'react-router-dom';
-
+import { Button, Form } from 'semantic-ui-react'
+import '../App.css'
 class NewProduct extends Component {
     constructor(props) {
         super(props);
@@ -50,39 +51,61 @@ class NewProduct extends Component {
         if (this.state.redirect)
             return <Redirect to='/' />;
         return (
-            <form onSubmit={event => this.submitHandler(event)}>
-                <label htmlFor="name">Name:</label>
-                <input type="text" id="name"
+            <Form className="form" onSubmit={event => this.submitHandler(event)}>
+              <Form.Group unstackable widths={3}>
+                <Form.Input  type="text" id="name"
+                    label= "Name:"
+                    placeholder="Name"
                     required
                     onChange={event => this.handleChange(event)}
                     value={this.state.name}/>
-                <label htmlFor="price">Price:</label>
-                <input type="number" step="0.01" id="price"
+                </Form.Group>
+                <Form.Group unstackable widths={3}>
+                  <Form.Input type="number" step="0.01" id="price"
+                    label= "Price:"
+                    placeholder="Price"
                     required
                     onChange={event => this.handleChange(event)}
                     value={this.state.price}/>
-                <label htmlFor="description">Description:</label>
-                <input type="text" id="description"
+                </Form.Group>
+                <Form.Group unstackable widths={3}>
+                  <Form.Input type="text" id="description"
+                    label="Description:"
+                    placeholder="Description"
                     onChange={event => this.handleChange(event)}
                     value={this.state.description}/>
-                <label htmlFor="img">IMG Source:</label>
-                <input type="text" id="img"
+                </Form.Group>
+                <Form.Group unstackable widths={3}>
+                  <Form.Input type="text" id="img"
+                    label="IMG Source:"
+                    placeholder="IMG Source"
                     onChange={event => this.handleChange(event)}
                     value={this.state.img}/>
-                <label htmlFor="material">Material:</label>
-                <input type="text" id="material"
+                </Form.Group>
+                <Form.Group unstackable widths={3}>
+                  <Form.Input type="text" id="material"
+                    label="Material:"
+                    placeholder="Material"
                     onChange={event => this.handleChange(event)}
                     value={this.state.material}/>
-                <label htmlFor="color">Color:</label>
-                <input type="text" id="color"
+                </Form.Group>
+                <Form.Group unstackable widths={3}>
+                  <Form.Input type="text" id="color"
+                    label="Color:"
+                    placeholder="Color"
                     onChange={event => this.handleChange(event)}
                     value={this.state.color}/>
-                <label htmlFor="Strap">Strap:</label>
-                <input type="text" id="strap"
+                </Form.Group>
+                <Form.Group unstackable widths={3}>
+                  <Form.Input type="text" id="strap"
+                    label="Strap:"
+                    placeholder="Strap"
                     onChange={event => this.handleChange(event)}
                     value={this.state.strap}/>
-                <button type="submit">Submit</button>
-            </form>
+                </Form.Group>
+                   <Form.Checkbox label='I agree to the Terms and Conditions' />
+                <Button type="submit">Submit</Button>
+            </Form>
         );
     };
 };

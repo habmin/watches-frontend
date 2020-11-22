@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import NewProduct from './components/NewProduct.jsx';
 import ShowProduct from './components/ShowProduct.jsx';
+import NewProduct from './components/NewProduct.jsx';
+import Store from './components/Store.jsx';
 import ProductEdit from './components/ProductEdit.jsx';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import { connect } from 'react-redux'
+
 
 let baseURL;
 if (process.env.NODE_ENV === 'development')
@@ -19,11 +22,7 @@ class App extends Component {
       cartItems: []
     }
   }
-  // pass the event as a paremeter
-  // this.set state of cart item to
-  // event .currenttarget or id
-  // push and set state to cart items array
-  // then call the function below by calling the event.
+
   cartFunction = (product) => {
         let itemsInCart = [...this.state.cartItems];
         itemsInCart.push(product)
@@ -139,9 +138,12 @@ class App extends Component {
           </Switch>
         </div>
       </Router>
-      </div>
+    </div>
     );
   }
+
+
 }
+
 
 export default App;
