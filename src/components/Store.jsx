@@ -1,59 +1,74 @@
 import './App'
 import { createStore, combineReducers } from 'redux'
 import { Cart, Product, CheckoutButton } from "react-shopping-cart";
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, createAction, createReducer } from '@reduxjs/toolkit'
 import React, { createContext, PureComponent, useReducer } from 'react';
-import { CartReducer, sumItems } from './CartReducer';
+
 
 const store = configureStore({ reducer: counterReducer })
-/*
-this pulls all data from card and adds actions
-
-*/
 
 // ACTIONS
-const addToCart = item => {
+const addToCart = product => {
   return {
     type: 'addItemToCart',
-    payload: item
+    payload: product
   }
 }
 const removingItemFromCart = item => {
   return {
     type: 'removingItemFromCart',
-    payload: item
+    payload: product
   }
 }
 const clearingAllItems = item => {
   return {
     type: 'removingAllFromCart',
-    payload: item
+    payload: product
   }
 }
 const checkOut = item => {
   return {
     type: 'checkoutItems',
-    payload: item
+    payload: product
   }
 }
 
 
 
 
-//reducer
-function counterReducer(state = { value: 0 }, action) {
-  switch (action.type) {
-    case 'addItemToCart':
-      return { value: state.value + 1 }
-    case 'removingItemFromCart':
-      return { value: state.value - 1 }
-    case 'removingAllFromCart':
-      return { value: state.value - state.value }
 
-    default:
-      return state
-  }
+
+interface CounterState {
+  value: number
 }
+
+const add = createAction('addItemToCart')
+const remove = createAction('removingItemFromCart')
+const clear = createAction('addItemToCart')
+const balance = createAction<number>('addingBalance')
+
+const initialState: CounterState = { value: 0 }
+
+const counterReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(add, (state, action) => {
+      state.value++
+    })
+    .addCase(remove, (state, action) => {
+      state.value--
+    })
+    .addCase(balance, (state, action) => {
+      state.value += action.payload
+    })
+    .addCase(clear, (state, action) => {
+      state.value -= state.value
+    })
+})
+
+
+
+
+
 
 
 let store = createStore(counterReducer)
@@ -62,15 +77,16 @@ let store = createStore(counterReducer)
 
 store.subscribe(() => console.log(store.getState()))
 
-// The only way to mutate the internal state is to dispatch an action.
-// The actions can be serialized, logged or stored and later replayed.
+
 store.dispatch({ type: 'addItemToCart'})
-// {value: 1}
+
 store.dispatch({ type: 'removingItemFromCart'})
-// {value: 2}
-store.dispatch({ type: 'removingAllFromCart'})
-// {value: 3}
-store.dispatch({ type: 'checkoutItems'})
+
+store.dispatch({ type: 'addingBalance'})
+
+store.dispatch({ type: 'clearingCart'})
+
+// store.dispatch({ type: 'checkoutItems'})
 
 
 
@@ -80,5 +96,29 @@ console.log(store.getState())
 
 
 
+
+
+
+
+
+
+
+//
+// //replace method with one above reducer
+// function counterReducer(state = initialState, action) {
+//   switch (action.type) {
+//     case 'addItemToCart':
+//       return { ...state, value: state.value + 1 }
+//     case 'removingItemFromCart':
+//       return { ...state, value: state.value - 1 }
+//     case 'addingBalance':
+//       return { ...state, value: state.value + action.payload }
+//     case 'clearingCart':
+//       return { ...state, value: state.value - state.value }
+//
+//     default:
+//       return state
+//   }
+// }
 
 export default ShoppingCart;
