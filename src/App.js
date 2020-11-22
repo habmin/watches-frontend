@@ -17,8 +17,8 @@ class App extends Component {
     super(props);
     this.state = {
       products: [],
-      currentUser: null,
-      cart: []
+      cart: [],
+      currentUser: null
     }
   }
 
@@ -59,6 +59,7 @@ class App extends Component {
       });
     }
     catch(err) {
+      console.log("an error!?")
       console.log(err);
     }
   }
@@ -94,7 +95,7 @@ class App extends Component {
     cartBuffer.push(product);
     this.setState({
       cart: cartBuffer
-    })
+    });
   };
 
   render() {
@@ -179,27 +180,29 @@ class App extends Component {
                 <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
               </Route>
               <Route path='/'>
-                {
-                  this.state.products.map((product) => {
-                    return (
-                      <div className="product" key={product._id}>
-                        <h1>{product.name}</h1>
-                        <img src={product.img} />
-                        {
-                          this.state.currentUser && this.state.currentUser.username === "admin"
-                          ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
-                          : <></>
-                        }
-                        <Link to={"/" + product._id}>More Details</Link>
-                        {
-                          this.state.currentUser
-                          ? <button onClick={() => {this.addToCart(product)}}>Add To Cart</button>
-                          : <></>
-                        }
-                      </div>
-                    )
-                  })
-                }
+                <div className="products-display">
+                  {
+                    this.state.products.map((product) => {
+                      return (
+                        <div className="product" key={product._id}>
+                          <h1>{product.name}</h1>
+                          <img src={product.img} />
+                          {
+                            this.state.currentUser && this.state.currentUser.username === "admin"
+                            ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                            : <></>
+                          }
+                          <Link to={"/" + product._id}>More Details</Link>
+                          {
+                            this.state.currentUser
+                            ? <button type="button" onClick={() => this.addToCart(product)}>Add To Cart</button>
+                            : <></>
+                          }
+                        </div>
+                      )
+                    })
+                  }
+                </div>
               </Route>
             </Switch>
           </div>
