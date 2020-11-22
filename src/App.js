@@ -5,6 +5,8 @@ import ProductEdit from './components/ProductEdit.jsx';
 import SignUp from './components/SignUp.jsx';
 import SignIn from './components/SignIn.jsx';
 import Cart from './components/Cart.jsx';
+import Search from './components/Search.jsx';
+
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 let baseURL;
@@ -19,12 +21,13 @@ class App extends Component {
     this.state = {
       products: [],
       cart: [],
+      searchResults: null,
       currentUser: null
     }
   }
 
   getProducts = async () => {
-    try{
+    try {
       await fetch(baseURL + "/watches").then(res => {
         return res.json();
       }).then(productData => {
@@ -122,6 +125,18 @@ class App extends Component {
     });
   }
 
+  searchResults = (results) => {
+    this.setState({
+      searchResults: results
+    });
+  };
+
+  clearResults = () => {
+    this.setState({
+      searchResults: null
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -154,6 +169,7 @@ class App extends Component {
               /* nav section end */
               }
             </div>
+            <Search baseURL={baseURL} searchResults={this.searchResults} clearResults={this.clearResults}/>
             <Switch>
               <Route path='/signin'>
                 <SignIn baseURL={baseURL} loginUser={this.loginUser}/>
@@ -221,27 +237,37 @@ class App extends Component {
               <Route path='/'>
                 <div className="products-display">
                   {
-                    this.state.products.map((product) => {
-                      return (
-                        <div className="product" key={product._id}>
-                          <h1>{product.name}</h1>
-                          <img src={product.img} />
-                          {
-                            this.state.currentUser && this.state.currentUser.username === "admin"
-                            ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
-                            : <></>
-                          }
-                          <Link to={"/" + product._id}>More Details</Link>
-                          {
-                            this.state.currentUser 
-                            ? product.qty
-                              ? <button type="button" onClick={() => this.addToCart(product)}>Add To Cart</button>
-                              : <button type="button">Sold Out</button>
-                            : <></>
-                          }
-                        </div>
-                      )
-                    })
+                    this.state.searchResults
+                    ?
+                      this.state.searchResults.map((product) => {
+                        return (
+                          <div className="product" key={product._id}>
+                            <h1>{product.name}</h1>
+                            <img src={product.img} />
+                            {
+                              this.state.currentUser && this.state.currentUser.username === "admin"
+                              ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                              : <></>
+                            }
+                            <Link to={"/" + product._id}>More Details</Link>
+                          </div>
+                        )
+                      })
+                    :
+                      this.state.products.map((product) => {
+                        return (
+                          <div className="product" key={product._id}>
+                            <h1>{product.name}</h1>
+                            <img src={product.img} />
+                            {
+                              this.state.currentUser && this.state.currentUser.username === "admin"
+                              ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                              : <></>
+                            }
+                            <Link to={"/" + product._id}>More Details</Link>
+                          </div>
+                        )
+                      })
                   }
                 </div>
               </Route>
