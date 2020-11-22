@@ -4,6 +4,7 @@ import ShowProduct from './components/ShowProduct.jsx';
 import ProductEdit from './components/ProductEdit.jsx';
 import SignUp from './components/SignUp.jsx';
 import SignIn from './components/SignIn.jsx';
+import Cart from './components/Cart.jsx';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 let baseURL;
@@ -92,11 +93,25 @@ class App extends Component {
 
   addToCart = (product) => {
     const cartBuffer = [...this.state.cart];
-    cartBuffer.push(product);
-    this.setState({
-      cart: cartBuffer
-    });
+    const amountOfProductInCart = cartBuffer.filter(items => items === product);
+    if (amountOfProductInCart.length >= product.qty) {
+      //can't have that much in the cart error
+      //could be a modal?
+    }
+    else {
+      cartBuffer.push(product);
+      this.setState({
+        cart: cartBuffer
+      });
+    }
+    console.log(this.state.cart)
   };
+
+  checkoutCart = () => {
+    this.setState({
+      cart: []
+    });
+  }
 
   render() {
     return (
@@ -115,7 +130,11 @@ class App extends Component {
               }
               {
                 this.state.currentUser
-                  ? <Link to="/signout" onClick={this.logoutUser}>Sign Out</Link>
+                  ? 
+                    <div>
+                      <Link to="/cart">View Cart</Link>
+                      <Link to="/signout" onClick={this.logoutUser}>Sign Out</Link>
+                    </div>
                   : 
                     <div>
                       <Link to="/signup">Sign Up</Link>
@@ -132,6 +151,9 @@ class App extends Component {
               </Route>
               <Route path='/signup'>
                 <SignUp baseURL={baseURL} loginUser={this.loginUser}/>
+              </Route>
+              <Route path='/cart'>
+                <Cart baseURL={baseURL} cart={this.state.cart} checkoutCart={this.checkoutCart}/>
               </Route>
               {
                 this.state.currentUser && this.state.currentUser.username === "admin"
@@ -194,8 +216,10 @@ class App extends Component {
                           }
                           <Link to={"/" + product._id}>More Details</Link>
                           {
-                            this.state.currentUser
-                            ? <button type="button" onClick={() => this.addToCart(product)}>Add To Cart</button>
+                            this.state.currentUser 
+                            ? product.qty
+                              ? <button type="button" onClick={() => this.addToCart(product)}>Add To Cart</button>
+                              : <button type="button">Sold Out</button>
                             : <></>
                           }
                         </div>
