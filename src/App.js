@@ -1,37 +1,26 @@
 import React, { Component } from 'react';
-import './App.css';
 import NewProduct from './components/NewProduct.jsx';
 import ShowProduct from './components/ShowProduct.jsx';
 import ProductEdit from './components/ProductEdit.jsx';
+import SignUp from './components/SignUp.jsx';
+import SignIn from './components/SignIn.jsx';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 let baseURL;
 if (process.env.NODE_ENV === 'development')
-  baseURL = 'http://localhost:3003';
+  baseURL = 'http://localhost:3008';
 else
-  baseURL = 'heroku/depploment URL placehorder';
+  baseURL = 'heroku/deployment URL placeholder';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       products: [],
-      cartItems: []
+      currentUser: null,
+      cart: []
     }
   }
-  // pass the event as a paremeter
-  // this.set state of cart item to
-  // event .currenttarget or id
-  // push and set state to cart items array
-  // then call the function below by calling the event.
-  cartFunction = (product) => {
-        let itemsInCart = [...this.state.cartItems];
-        itemsInCart.push(product)
-        this.setState({
-          cartItems: itemsInCart
-    })
-    console.log(this.state.cartItems)
-  };
 
   getProducts = async () => {
     try{
@@ -48,9 +37,32 @@ class App extends Component {
       console.log(error);
     }
   };
+
   componentDidMount() {
     this.getProducts();
   };
+
+  loginUser = (user) => {
+      this.setState({
+        currentUser: user
+    });
+  };
+
+  logoutUser = () => {
+    try {
+      fetch(baseURL + '/sessions', {
+        method: 'DELETE',
+      }).then((res) => {
+        this.setState({
+          currentUser: null
+        });
+      });
+    }
+    catch(err) {
+      console.log(err);
+    }
+  }
+
   addProduct = (newProduct) => {
     const productsBuffer = [...this.state.products];
     productsBuffer.push(newProduct);
@@ -76,69 +88,122 @@ class App extends Component {
       products: productsBuffer
     });
   }
+
+  addToCart = (product) => {
+    const cartBuffer = [...this.state.cart];
+    cartBuffer.push(product);
+    this.setState({
+      cart: cartBuffer
+    })
+  };
+
   render() {
     return (
       <div className="App">
         <Router>
           <div>
-          <div className="header">
-            {
-            /* make this a nav bar
-            user sign in
-            */
-            }
-            <Link to="/">View Watches</Link>
-            <Link to="/new">Add Watch</Link>
-          </div>
-          <Switch>
-            {
-              this.state.products.map((product) => {
-                return (
-                  <Route path={"/" + product._id + "/edit"}>
-                    <ProductEdit
-                      baseURL={baseURL}
-                      product={product}
-                      updateProduct={this.updateProduct}
-                      deletedProduct={this.deletedProduct}/>
+            <div className="header">
+              {
+              /* nav section begin */
+              }
+              <Link to="/">View Watches</Link>
+              {
+                this.state.currentUser && this.state.currentUser.username === "admin"
+                ? <Link to="/new">Add Watch</Link>
+                : <></>
+              }
+              {
+                this.state.currentUser
+                  ? <Link to="/signout" onClick={this.logoutUser}>Sign Out</Link>
+                  : 
+                    <div>
+                      <Link to="/signup">Sign Up</Link>
+                      <Link to="/signin">Sign In</Link>
+                    </div>
+              }
+              {
+              /* nav section end */
+              }
+            </div>
+            <Switch>
+              <Route path='/signin'>
+                <SignIn baseURL={baseURL} loginUser={this.loginUser}/>
+              </Route>
+              <Route path='/signup'>
+                <SignUp baseURL={baseURL} loginUser={this.loginUser}/>
+              </Route>
+              {
+                this.state.currentUser && this.state.currentUser.username === "admin"
+                ?
+                  this.state.products.map((product) => {
+                    return (
+                      <Route path={"/" + product._id + "/edit"}>
+                        <ProductEdit 
+                          baseURL={baseURL} 
+                          product={product} 
+                          updateProduct={this.updateProduct}
+                          deletedProduct={this.deletedProduct}/>
+                      </Route>
+                    );
+                  })
+                :
+                  this.state.products.map((product) => {
+                    return (
+                      <Route path={"/" + product._id + "/edit"}>
+                        <p>Unauthorized Access</p>
+                      </Route>
+                    );
+                  })
+              }
+              {
+                this.state.products.map((product) => {
+                  return (
+                    <Route exact path={"/" + product._id}>
+                      <ShowProduct baseURL={baseURL} product={product}/>
+                    </Route>
+                  );
+                })
+              }
+              {
+                this.state.currentUser && this.state.currentUser.username === "admin"
+                ?
+                  <Route path='/new'>
+                    <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
                   </Route>
-                );
-              })
-            }
-            {
-              this.state.products.map((product) => {
-                return (
-                  <Route exact path={"/" + product._id}>
-                    <ShowProduct baseURL={baseURL} product={product}/>
+                :
+                  <Route path='/new'>
+                    <p>Unauthorized Access</p>
                   </Route>
-                );
-              })
-            }
-            <Route path='/new'>
-              <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
-            </Route>
-
-            <Route path='/'>
-               <div>
+              }
+              <Route path='/new'>
+                <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
+              </Route>
+              <Route path='/'>
                 {
                   this.state.products.map((product) => {
                     return (
                       <div className="product" key={product._id}>
-                        <header>Go to Cart</header>
                         <h1>{product.name}</h1>
-                        <img src={product.img} alt={`${this.props.name} watches`} />
-                        <h3>{product.price}</h3>
-                        <button onClick={() => this.cartFunction(product)}>add</button>
-                        <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                        <img src={product.img} />
+                        {
+                          this.state.currentUser && this.state.currentUser.username === "admin"
+                          ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                          : <></>
+                        }
                         <Link to={"/" + product._id}>More Details</Link>
+                        {
+                          this.state.currentUser
+                          ? <button onClick={() => {this.addToCart(product)}}>Add To Cart</button>
+                          : <></>
+                        }
                       </div>
                     )
                   })
                 }
-              </div>
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+              </Route>
+            </Switch>
+          </div>
+        </Router>
       </div>
     );
   }
