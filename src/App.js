@@ -250,6 +250,11 @@ class App extends Component {
                               : <></>
                             }
                             <Link to={"/" + product._id}>More Details</Link>
+                            {
+                              this.state.currentUser && product.qty
+                              ? <button type="button" onClick={() => this.addToCart(product)}>Add To Cart</button>
+                              : <button type="button">Sold Out</button>
+                            }
                           </div>
                         )
                       })
@@ -265,6 +270,11 @@ class App extends Component {
                               : <></>
                             }
                             <Link to={"/" + product._id}>More Details</Link>
+                            {
+                              this.state.currentUser && product.qty
+                              ? <button type="button" onClick={() => this.addToCart(product)}>Add To Cart</button>
+                              : <button type="button">Sold Out</button>
+                            }
                           </div>
                         )
                       })
