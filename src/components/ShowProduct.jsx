@@ -11,11 +11,17 @@ function ShowProduct(props) {
           <th>Price</th>
         </tr>
         <tr>
-
           <td>{ props.product.description }</td>
           <td>{ props.product.price }</td>
         </tr>
       </table>
+      {
+        props.currentUser 
+        ? props.product.qty
+          ? <button type="button" onClick={() => props.addToCart(props.product)}>Add To Cart</button>
+          : <button type="button">Sold Out</button>
+        : <></>
+      }
     </div>
   );
 };

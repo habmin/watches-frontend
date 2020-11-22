@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import NewProduct from './components/NewProduct.jsx';
 import ShowProduct from './components/ShowProduct.jsx';
 import ProductEdit from './components/ProductEdit.jsx';
-import Search from './components/Search.jsx';
 import SignUp from './components/SignUp.jsx';
 import SignIn from './components/SignIn.jsx';
+import Cart from './components/Cart.jsx';
+import Search from './components/Search.jsx';
+
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 let baseURL;
@@ -18,6 +20,7 @@ class App extends Component {
     super(props);
     this.state = {
       products: [],
+      cart: [],
       searchResults: null,
       currentUser: null
     }
@@ -91,6 +94,37 @@ class App extends Component {
     });
   }
 
+  addToCart = (product) => {
+    const cartBuffer = [...this.state.cart];
+    const amountOfProductInCart = cartBuffer.filter(items => items === product);
+    if (amountOfProductInCart.length >= product.qty) {
+      //can't have that much in the cart error
+      //could be a modal?
+    }
+    else {
+      cartBuffer.push(product);
+      this.setState({
+        cart: cartBuffer
+      });
+    }
+    console.log(this.state.cart)
+  };
+
+  checkoutCart = () => {
+    this.setState({
+      cart: []
+    });
+  }
+
+  removeCartItem = (item) => {
+    const index = this.state.cart.findIndex(indexTarget => indexTarget._id === item);
+    const cartBuffer = [...this.state.cart];
+    cartBuffer.splice(index, 1);
+    this.setState({
+      cart: cartBuffer
+    });
+  }
+
   searchResults = (results) => {
     this.setState({
       searchResults: results
@@ -120,7 +154,11 @@ class App extends Component {
               }
               {
                 this.state.currentUser
-                  ? <Link to="/signout" onClick={this.logoutUser}>Sign Out</Link>
+                  ? 
+                    <div>
+                      <Link to="/cart">View Cart</Link>
+                      <Link to="/signout" onClick={this.logoutUser}>Sign Out</Link>
+                    </div>
                   : 
                     <div>
                       <Link to="/signup">Sign Up</Link>
@@ -138,6 +176,13 @@ class App extends Component {
               </Route>
               <Route path='/signup'>
                 <SignUp baseURL={baseURL} loginUser={this.loginUser}/>
+              </Route>
+              <Route path='/cart'>
+                <Cart 
+                  baseURL={baseURL} 
+                  cart={this.state.cart} 
+                  checkoutCart={this.checkoutCart}
+                  removeCartItem={this.removeCartItem}/>
               </Route>
               {
                 this.state.currentUser && this.state.currentUser.username === "admin"
@@ -166,7 +211,11 @@ class App extends Component {
                 this.state.products.map((product) => {
                   return (
                     <Route exact path={"/" + product._id}>
-                      <ShowProduct baseURL={baseURL} product={product}/>
+                      <ShowProduct 
+                        baseURL={baseURL} 
+                        product={product} 
+                        currentUser={this.state.currentUser}
+                        addToCart={this.addToCart}/>
                     </Route>
                   );
                 })
@@ -193,30 +242,30 @@ class App extends Component {
                       this.state.searchResults.map((product) => {
                         return (
                           <div className="product" key={product._id}>
-                          <h1>{product.name}</h1>
-                          <img src={product.img} />
-                          {
-                            this.state.currentUser && this.state.currentUser.username === "admin"
-                            ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
-                            : <></>
-                          }
-                          <Link to={"/" + product._id}>More Details</Link>
-                        </div>
+                            <h1>{product.name}</h1>
+                            <img src={product.img} />
+                            {
+                              this.state.currentUser && this.state.currentUser.username === "admin"
+                              ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                              : <></>
+                            }
+                            <Link to={"/" + product._id}>More Details</Link>
+                          </div>
                         )
                       })
                     :
                       this.state.products.map((product) => {
                         return (
                           <div className="product" key={product._id}>
-                          <h1>{product.name}</h1>
-                          <img src={product.img} />
-                          {
-                            this.state.currentUser && this.state.currentUser.username === "admin"
-                            ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
-                            : <></>
-                          }
-                          <Link to={"/" + product._id}>More Details</Link>
-                        </div>
+                            <h1>{product.name}</h1>
+                            <img src={product.img} />
+                            {
+                              this.state.currentUser && this.state.currentUser.username === "admin"
+                              ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                              : <></>
+                            }
+                            <Link to={"/" + product._id}>More Details</Link>
+                          </div>
                         )
                       })
                   }
