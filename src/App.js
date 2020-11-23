@@ -80,7 +80,6 @@ class App extends Component {
       <div className="App">
         <Router>
           <div>
-          <div className="header">
             {
             /* make this a nav bar
             user sign in
@@ -91,16 +90,13 @@ class App extends Component {
             @import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
             @import url('https://fonts.googleapis.com/css2?family=Raleway+Dots&display=swap');
             </style>
-
               <li className="navBarLi"><Link to="/">HOME</Link></li>
               <li className="navBarLi"><Link to="/new">ADD INVENTORY</Link></li>
               <li className="searchBar">|   SEARCH</li>
               <li><h1 className="title">Fifth Hour</h1></li>
             </nav>
-          </div>
-
-          <header>
-            <h1>Fifth Hour</h1>
+          <header className="header">
+            <hr/>
           </header>
 
 
@@ -139,17 +135,16 @@ class App extends Component {
                   this.state.products.map((product) => {
                     return (
                       <div className="cards">
-                      <div key={product._id}>
-                        <img onClick={() => this.cartFunction(product)}className="card-img" src={product.img} alt={`${this.props.name} watches`} wrapped ui={false} />
-                        <h3 className="product">{product.name}</h3>
-                        <p className="price">${product.price}</p>
-                        <div>
-                        <button className="addProductButton">ADD</button>
+                        <div key={product._id}>
+                          <img onClick={() => this.cartFunction(product)}className="card-img" src={product.img} alt={`${this.props.name} watches`} wrapped ui={false} />
+                        <div className="cardDetails">
+                          <h3 className="product">{product.name}</h3>
+                          <p className="price">${product.price}</p>
+                          <Link className="editLink" to={"/" + product._id + '/edit'}>Edit</Link>
+                          <Link className="detailsLink" to={"/" + product._id}>Details</Link>
                         </div>
-                        <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
-                        <Link to={"/" + product._id}>More Details</Link>
-                       </div>
-                      </div>
+                     </div>
+                  </div>
                     )
                   })
                 }

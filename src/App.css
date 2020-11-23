@@ -2,6 +2,11 @@ img {
   height: 350px;
   width: 350px;
 }
+hr {
+  margin-top: 30px;
+  height: 1px;
+  width: 30%;
+}
 /*Nav Bar*/
 .navBarLi a:hover {
   background-color: #485265;
@@ -25,8 +30,9 @@ img {
 }
 .title {
   font-family: 'Raleway Dots', Poiret One;
+  font-size: 40px;
   color: #fcfaf9;
-  margin-left: 45%;
+  margin-left: 46%;
 }
 .navBar {
   overflow: hidden;
@@ -34,15 +40,9 @@ img {
   background-color: #181818;
   padding: 20px 0px 5px 10px;
 }
+
 /*END NAV BAR*/
 
-/*MAIN HEADER*/
-.mainHeader {
-  text-align: center;
-  margin: 40px 10px 10px 10px;
-}
-
-/*MAIN HEADER*/
 
 /*FORM*/
 
@@ -64,35 +64,24 @@ img {
   display: inline-block;
 }
 .card-img {
-
   margin: 5px;
 }
+.cardDetails {
+  margin: 0px 0px 0px 130px;
+}
 .price {
- margin: 0px 0px 0px 0px;
- padding: 0px 0px 0px 0px;
+  padding: 3px 10px;
+  margin: 0px 0px 0px 0px;
 }
 .product {
-  padding: 0px 0px 0px 0px;
-  margin: 0px 0px 0px 0px;
+  margin: 0;
 
 }
-.addProductButton {
-  /* background-color: #e9ecef; */
+.detailsLink {
+  margin-left: 0;
+  padding: 5px;
 }
-
-/*
-.innerFormOne {
-
+.editLink {
+  margin-left: 0;
+  padding: 0;
 }
-.name {
-  margin: auto;
-}
-.image {
-  margin: 0px;
-}
-.show {
-  margin: auto;
-}
-.ShowProductTable {
-  margin: auto;
-} */
