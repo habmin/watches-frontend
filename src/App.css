@@ -1,8 +1,3 @@
-img {
-  height: 200px;
-  width: 200px;
-}
-
 hr {
   margin-top: 30px;
   height: 1px;
@@ -73,16 +68,20 @@ hr {
 }
 .cards {
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
+  justify-content: center;
   margin: 5px;
   padding: 5px;
+}
+
+.product-cards {
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .search-bar {
   margin: 10px;
 }
 
-.product-edit{
-  text-align: center;
+.edit-product-link{
+  margin: 0 3px 0 0;
 }

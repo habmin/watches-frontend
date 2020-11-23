@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect} from 'react-router-dom';
-import { Button, Form, Grid } from 'semantic-ui-react';
+import { Button, Form, Grid, Image } from 'semantic-ui-react';
 import '../App.css';
 
 
@@ -67,9 +67,7 @@ class ProductEdit extends Component {
             return <Redirect to='/' />;
         return (
             <div className="product-edit">
-                <div className="image-container">
-                    <img className="edit-product-image" src={this.state.img} alt={this.state.name} />
-                </div>
+                <Image size="medium" centered className="edit-product-image" src={this.state.img} alt={this.state.name} />
                 <Grid centered columns={2}>
                     <Grid.Column>
                         <Form className="edit-form" onSubmit={this.handleSubmit}>

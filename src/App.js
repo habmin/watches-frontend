@@ -143,14 +143,14 @@ class App extends Component {
   
   renderIndex = (list) => {
     return (
-      <Card.Group itemsPerRow={3} stackable>
+      <Card.Group className="product-cards" itemsPerRow={3} stackable>
       {
         list.map((product) => {
           return (        
           <Card className="product" key={product._id}>
             <Card.Content>
               <Card.Header>{product.name}</Card.Header>
-              <Image src={product.img} alt={`${this.props.name} watches`} wrapped ui={false} />
+              <Image className="product-img" fluid src={product.img} alt={`${this.props.name} watches`} />
               <Card.Description>
                 <h3>$ {product.price}</h3>
                 {
@@ -165,7 +165,7 @@ class App extends Component {
             <Card.Content extra>
               {
                 this.state.currentUser && this.state.currentUser.username === "admin"
-                ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                ? <Link className="edit-product-link" to={"/" + product._id + '/edit'}>Edit Product</Link>
                 : <></>
               }
               <Link to={"/" + product._id}>More Details</Link>
