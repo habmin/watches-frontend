@@ -58,11 +58,13 @@ img {
 /*END FORM*/
 
  .product {
-  margin-top: 50px;
+  margin-top: 100px;
 }
 .cards {
-  display: inline;
-  background-color: red;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: center;
 }
 /*
 .innerFormOne {

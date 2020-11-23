@@ -12,6 +12,7 @@ class ProductEdit extends Component {
             material: this.props.product.material,
             color: this.props.product.color,
             strap: this.props.product.strap,
+            qty: this.props.product.qty,
             redirect: false 
         }
     };
@@ -33,7 +34,8 @@ class ProductEdit extends Component {
                 img: this.state.img,
                 material: this.state.material,
                 color: this.state.color,
-                strap: this.state.strap
+                strap: this.state.strap,
+                qty: this.state.qty,
             }),
             headers: {'Content-Type': 'application/json'}
         }).then((res) => {
@@ -77,7 +79,7 @@ class ProductEdit extends Component {
                     />
                     <label htmlFor="price">Price:</label>
                     <input
-                        type="number" step="0.01" id="price"
+                        type="number" step="0.01" id="price" min="0"
                         className="input-price"
                         value={this.state.price}
                         id='price'
@@ -119,6 +121,15 @@ class ProductEdit extends Component {
                         className="strap"
                         value={this.state.strap}
                         id='strap'
+                        onChange={this.handleChange}
+                    />
+                    <label htmlFor="qty">Quantity:</label>
+                    <input
+                        type="number" step="1" min="0"
+                        required
+                        className="strap"
+                        value={this.state.qty}
+                        id='qty'
                         onChange={this.handleChange}
                     />
                     <button type='submit' className="save-button">Save</button>

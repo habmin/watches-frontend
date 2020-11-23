@@ -1,39 +1,37 @@
 import React, { Component } from 'react';
-import './App.css';
-import ShowProduct from './components/ShowProduct.jsx';
 import NewProduct from './components/NewProduct.jsx';
-import Store from './components/Store.jsx';
+import ShowProduct from './components/ShowProduct.jsx';
 import ProductEdit from './components/ProductEdit.jsx';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import SignUp from './components/SignUp.jsx';
+import SignIn from './components/SignIn.jsx';
+import Cart from './components/Cart.jsx';
+import Search from './components/Search.jsx';
+
+import './App.css';
+
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom'
 import { Card, Button, Input, Image, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 
 
 let baseURL;
 if (process.env.NODE_ENV === 'development')
-  baseURL = 'http://localhost:3003';
+  baseURL = 'http://localhost:3008';
 else
-  baseURL = 'heroku/depploment URL placehorder';
+  baseURL = 'heroku/deployment URL placeholder';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       products: [],
-      cartItems: []
+      cart: [],
+      searchResults: null,
+      currentUser: null
     }
   }
 
-  cartFunction = (product) => {
-        let itemsInCart = [...this.state.cartItems];
-        itemsInCart.push(product)
-        this.setState({
-          cartItems: itemsInCart
-    })
-    console.log(this.state.cartItems)
-  };
-
   getProducts = async () => {
-    try{
+    try {
       await fetch(baseURL + "/watches").then(res => {
         return res.json();
       }).then(productData => {
@@ -47,9 +45,33 @@ class App extends Component {
       console.log(error);
     }
   };
+
   componentDidMount() {
     this.getProducts();
   };
+
+  loginUser = (user) => {
+      this.setState({
+        currentUser: user
+    });
+  };
+
+  logoutUser = () => {
+    try {
+      fetch(baseURL + '/sessions', {
+        method: 'DELETE',
+      }).then((res) => {
+        this.setState({
+          currentUser: null
+        });
+      });
+    }
+    catch(err) {
+      console.log("an error!?")
+      console.log(err);
+    }
+  }
+
   addProduct = (newProduct) => {
     const productsBuffer = [...this.state.products];
     productsBuffer.push(newProduct);
@@ -75,6 +97,81 @@ class App extends Component {
       products: productsBuffer
     });
   }
+
+  addToCart = (product) => {
+    const cartBuffer = [...this.state.cart];
+    const amountOfProductInCart = cartBuffer.filter(items => items === product);
+    if (amountOfProductInCart.length >= product.qty) {
+      //can't have that much in the cart error
+      //could be a modal?
+    }
+    else {
+      cartBuffer.push(product);
+      this.setState({
+        cart: cartBuffer
+      });
+    }
+    console.log(this.state.cart)
+  };
+
+  checkoutCart = () => {
+    this.setState({
+      cart: []
+    });
+  }
+
+  removeCartItem = (item) => {
+    const index = this.state.cart.findIndex(indexTarget => indexTarget._id === item);
+    const cartBuffer = [...this.state.cart];
+    cartBuffer.splice(index, 1);
+    this.setState({
+      cart: cartBuffer
+    });
+  }
+
+  searchResults = (results) => {
+    this.setState({
+      searchResults: results
+    });
+  };
+
+  clearResults = () => {
+    this.setState({
+      searchResults: null
+    });
+  }
+
+  renderIndex = (list) => {
+     return list.map((product) => {
+      return (
+        <Card className="product" key={product._id}>
+          <Card.Content>
+            <Card.Header>{product.name}</Card.Header>
+            <Image src={product.img} alt={`${this.props.name} watches`} wrapped ui={false} />
+            <Card.Description>
+              <h3>$ {product.price}</h3>
+              {
+                this.state.currentUser && product.qty
+                ? product.qty
+                  ? <Button type="button" onClick={() => this.addToCart(product)}>ADD</Button>
+                  : <Button type="button">SOLD OUT</Button>
+                : <Button type="button">SIGN IN TO ADD</Button>
+              }
+            </Card.Description>
+          </Card.Content>
+          <Card.Content extra>
+            {
+              this.state.currentUser && this.state.currentUser.username === "admin"
+              ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+              : <></>
+            }
+            <Link to={"/" + product._id}>More Details</Link>
+          </Card.Content>
+        </Card>
+      );
+    });
+  };
+
   render() {
     return (
       <div className="App">
@@ -91,62 +188,110 @@ class App extends Component {
             @import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
             @import url('https://fonts.googleapis.com/css2?family=Raleway+Dots&display=swap');
             </style>
-
+            <h1 className="title">Fifth Hour</h1>
               <li className="navBarLi"><Link to="/">HOME</Link></li>
-              <li className="navBarLi"><Link to="/new">ADD INVENTORY</Link></li>
-              <li className="searchBar">|   SEARCH</li>
-              <li><h1 className="title">Fifth Hour</h1></li>
+              {
+                this.state.currentUser && this.state.currentUser.username === "admin"
+                ? <li className="navBarLi"><Link to="/new">ADD INVENTORY</Link></li>
+                : <></>
+              }
+              {
+                this.state.currentUser
+                  ? 
+                    <div>
+                      <li className="navBarLi">
+                        <Link to="/cart">View Cart</Link>
+                      </li>
+                      <li className="navBarLi">
+                        <Link to="/signout" onClick={this.logoutUser}>Sign Out</Link>
+                      </li>
+                    </div>
+                  : 
+                    <div>
+                      <li className="navBarLi">
+                        <Link to="/signup">Sign Up</Link>
+                      </li>
+                      <li className="navBarLi">
+                        <Link to="/signin">Sign In</Link>
+                      </li>
+                    </div>
+              }
             </nav>
           </div>
           <Switch>
+            <Route path='/signin'>
+              <SignIn baseURL={baseURL} loginUser={this.loginUser}/>
+            </Route>
+            <Route path='/signup'>
+              <SignUp baseURL={baseURL} loginUser={this.loginUser}/>
+            </Route>
+            <Route path='/cart'>
+              <Cart 
+                baseURL={baseURL} 
+                cart={this.state.cart} 
+                checkoutCart={this.checkoutCart}
+                removeCartItem={this.removeCartItem}/>
+            </Route>
             {
-              this.state.products.map((product) => {
-                return (
-                  <Route path={"/" + product._id + "/edit"}>
-                    <ProductEdit
-                      baseURL={baseURL}
-                      product={product}
-                      updateProduct={this.updateProduct}
-                      deletedProduct={this.deletedProduct}/>
-                  </Route>
-                );
-              })
+              this.state.currentUser && this.state.currentUser.username === "admin"
+              ?
+                this.state.products.map((product) => {
+                  return (
+                    <Route path={"/" + product._id + "/edit"}>
+                      <ProductEdit 
+                        baseURL={baseURL} 
+                        product={product} 
+                        updateProduct={this.updateProduct}
+                        deletedProduct={this.deletedProduct}/>
+                    </Route>
+                  );
+                })
+              :
+                this.state.products.map((product) => {
+                  return (
+                    <Route path={"/" + product._id + "/edit"}>
+                      <p>Unauthorized Access</p>
+                    </Route>
+                  );
+                })
             }
             {
               this.state.products.map((product) => {
                 return (
                   <Route exact path={"/" + product._id}>
-                    <ShowProduct baseURL={baseURL} product={product}/>
+                    <ShowProduct 
+                      baseURL={baseURL} 
+                      product={product} 
+                      currentUser={this.state.currentUser}
+                      addToCart={this.addToCart}/>
                   </Route>
                 );
               })
             }
-            <Route path='/new'>
-              <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
-            </Route>
+            {
+              this.state.currentUser && this.state.currentUser.username === "admin"
+              ?
+                <Route path='/new'>
+                  <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
+                </Route>
+              :
+                <Route path='/new'>
+                  <p>Unauthorized Access</p>
+                </Route>
+            }
             <Route path='/'>
-               <div className="cards">
-                {
-
-                  this.state.products.map((product) => {
-                    return (
-                      <Card className="product" key={product._id}>
-                      <Card.Content>
-                        <Card.Header>{product.name}</Card.Header>
-                        <Image src={product.img} alt={`${this.props.name} watches`} wrapped ui={false} />
-                        <Card.Description>
-                        <h3>$ {product.price}</h3>
-                        <Button onClick={() => this.cartFunction(product)}>ADD</Button>
-                        </Card.Description>
-                        </Card.Content>
-                        <Card.Content extra>
-                        <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
-                        <Link to={"/" + product._id}>More Details</Link>
-                       </Card.Content>
-                      </Card>
-                    )
-                  })
-                }
+              <div className="show-path">
+                <Search 
+                  baseURL={baseURL} 
+                  searchResults={this.searchResults} 
+                  clearResults={this.clearResults}/>
+                <div className="cards">
+                  {
+                    this.state.searchResults
+                    ? this.renderIndex(this.state.searchResults)
+                    : this.renderIndex(this.state.products)
+                  }
+                </div>
               </div>
             </Route>
           </Switch>
