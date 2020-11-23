@@ -98,6 +98,12 @@ class App extends Component {
               <li><h1 className="title">Fifth Hour</h1></li>
             </nav>
           </div>
+
+          <header>
+            <h1>Fifth Hour</h1>
+          </header>
+
+
           <Switch>
             {
               this.state.products.map((product) => {
@@ -121,29 +127,29 @@ class App extends Component {
                 );
               })
             }
+
             <Route path='/new'>
               <NewProduct baseURL={baseURL} addProduct={this.addProduct}/>
             </Route>
-            <Route path='/'>
-               <div className="cards">
+
+              <Route path='/'>
+               <div>
                 {
 
                   this.state.products.map((product) => {
                     return (
-                      <Card className="product" key={product._id}>
-                      <Card.Content>
-                        <Card.Header>{product.name}</Card.Header>
-                        <Image src={product.img} alt={`${this.props.name} watches`} wrapped ui={false} />
-                        <Card.Description>
-                        <h3>$ {product.price}</h3>
-                        <Button onClick={() => this.cartFunction(product)}>ADD</Button>
-                        </Card.Description>
-                        </Card.Content>
-                        <Card.Content extra>
+                      <div className="cards">
+                      <div key={product._id}>
+                        <img onClick={() => this.cartFunction(product)}className="card-img" src={product.img} alt={`${this.props.name} watches`} wrapped ui={false} />
+                        <h3 className="product">{product.name}</h3>
+                        <p className="price">${product.price}</p>
+                        <div>
+                        <button className="addProductButton">ADD</button>
+                        </div>
                         <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
                         <Link to={"/" + product._id}>More Details</Link>
-                       </Card.Content>
-                      </Card>
+                       </div>
+                      </div>
                     )
                   })
                 }

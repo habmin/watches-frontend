@@ -1,6 +1,6 @@
 img {
-  height: 200px;
-  width: 200px;
+  height: 350px;
+  width: 350px;
 }
 /*Nav Bar*/
 .navBarLi a:hover {
@@ -57,13 +57,29 @@ img {
 
 /*END FORM*/
 
- .product {
-  margin-top: 50px;
-}
 .cards {
-  display: inline;
-  background-color: red;
+  margin: 5% 8% 5% 5%;
+  padding: 10px 10px 10px 10px;
+  border-radius: 10px;
+  display: inline-block;
 }
+.card-img {
+
+  margin: 5px;
+}
+.price {
+ margin: 0px 0px 0px 0px;
+ padding: 0px 0px 0px 0px;
+}
+.product {
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+
+}
+.addProductButton {
+  /* background-color: #e9ecef; */
+}
+
 /*
 .innerFormOne {
 
