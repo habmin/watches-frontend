@@ -15,7 +15,7 @@ class NewProduct extends Component {
             material: "",
             color: "",
             strap: "",
-            qty: "",
+            qty: 0,
             redirect: false
         }
     }
@@ -38,7 +38,8 @@ class NewProduct extends Component {
                 img: this.state.img,
                 material: this.state.material,
                 color: this.state.color,
-                strap: this.state.strap
+                strap: this.state.strap,
+                qty: this.state.qty
             }),
             headers: {'Content-Type': 'application/json'}
         }).then((res) => {

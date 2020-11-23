@@ -140,7 +140,7 @@ class App extends Component {
       searchResults: null
     });
   }
-
+  
   renderIndex = (list) => {
     return (
       <Card.Group itemsPerRow={3} stackable>
@@ -306,9 +306,6 @@ class App extends Component {
     </div>
     );
   }
-
-
 }
-
 
 export default App;
