@@ -1,26 +1,29 @@
 import React from 'react';
+import './ShowProducts.css'
 
 function ShowProduct(props) {
   return (
-    <div className="Show">
-      <h1>{props.product.name}</h1>
-      <img src={props.product.img} />
-      <table>
-        <tr>
-          <th>Description</th>
-          <th>Price</th>
-        </tr>
-        <tr>
-          <td>{ props.product.description }</td>
-          <td>{ props.product.price }</td>
-        </tr>
-      </table>
-      {
-        props.currentUser && props.product.qty
-        ? <button type="button" onClick={() => props.addToCart(props.product)}>Add To Cart</button>
-        : <button type="button">Sold Out</button>
-      }
+
+
+    <div className="show">
+      <div className="left">
+        <h1 className="showHeader">{props.product.name}</h1>
+        <h3 className="showPrice" >${ props.product.price }.00</h3>
+        <p>
+        <strong> Color: </strong>{ props.product.color } |
+        <strong> Material: </strong> { props.product.material }
+        </p>
+          {
+            props.currentUser && props.product.qty
+            ? <button className="showButton" type="button" onClick={() => props.addToCart(props.product)}>Add To Cart</button>
+            : <button className="showButton" type="button">Sold Out</button>
+          }
+          </div>
+        <div className="right">
+          <img className="showImg"src={props.product.img} />
+        </div>
     </div>
+
   );
 };
 

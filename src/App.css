@@ -14,10 +14,11 @@ hr {
   color: white;
   text-align: center;
   float: left;
-  padding: 0px 15px 0px 10px;
+  padding: 0 10px 5px 10px;
   font-family: 'Poiret One', cursive;
   margin: 0%;
 }
+
 .search-bar {
   font-family: 'Raleway Dots', Poiret One;
   float: left;
@@ -27,7 +28,11 @@ hr {
 .title {
   font-family: 'Raleway Dots', Poiret One;
   color: #fcfaf9;
+  padding: 0;
   margin-left: 45%;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-top: 0;
 }
 .navBar {
   overflow: hidden;
@@ -66,6 +71,7 @@ hr {
 .product {
   text-align: center;
 }
+
 .cards {
   display: flex;
   justify-content: center;
