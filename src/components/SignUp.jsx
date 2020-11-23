@@ -24,6 +24,7 @@ class SignUp extends Component {
 
   onSignUp = (event) => {
     event.preventDefault();
+    console.log(this.props.baseURL);
     if (this.state.password !== this.state.passwordConfirmation){
       this.setState({
         errorMsg: "Password and confirmation do not match",
