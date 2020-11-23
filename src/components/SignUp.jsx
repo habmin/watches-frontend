@@ -24,7 +24,6 @@ class SignUp extends Component {
 
   onSignUp = (event) => {
     event.preventDefault();
-    console.log(this.props.baseURL);
     if (this.state.password !== this.state.passwordConfirmation){
       this.setState({
         errorMsg: "Password and confirmation do not match",
@@ -90,6 +89,7 @@ class SignUp extends Component {
   };
 
   render() {
+    console.log(this.props.baseURL);
     if (this.state.redirect)
       return <Redirect to='/' />;
     return (
