@@ -12,6 +12,7 @@ class NewProduct extends Component {
             material: "",
             color: "",
             strap: "",
+            qty: 0,
             redirect: false
         }
     }
@@ -33,7 +34,8 @@ class NewProduct extends Component {
                 img: this.state.img,
                 material: this.state.material,
                 color: this.state.color,
-                strap: this.state.strap
+                strap: this.state.strap,
+                qty: this.state.qty
             }),
             headers: {'Content-Type': 'application/json'}
         }).then((res) => {
@@ -57,7 +59,7 @@ class NewProduct extends Component {
                     onChange={event => this.handleChange(event)}
                     value={this.state.name}/>
                 <label htmlFor="price">Price:</label>
-                <input type="number" step="0.01" id="price"
+                <input type="number" step="0.01" id="price" min="0"
                     required
                     onChange={event => this.handleChange(event)}
                     value={this.state.price}/>
@@ -77,10 +79,15 @@ class NewProduct extends Component {
                 <input type="text" id="color"
                     onChange={event => this.handleChange(event)}
                     value={this.state.color}/>
-                <label htmlFor="Strap">Strap:</label>
+                <label htmlFor="strap">Strap:</label>
                 <input type="text" id="strap"
                     onChange={event => this.handleChange(event)}
                     value={this.state.strap}/>
+                <label htmlFor="quantity">Quantity:</label>
+                <input type="number" step="1" id="qty"
+                    required
+                    onChange={event => this.handleChange(event)}
+                    value={this.state.qty}/>
                 <button type="submit">Submit</button>
             </form>
         );
