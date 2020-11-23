@@ -21,7 +21,6 @@ img {
   float: left;
   color: #fcfaf9;
   text-align: center;
-  margin-left: 5%;
 }
 .title {
   font-family: 'Raleway Dots', Poiret One;
@@ -77,22 +76,9 @@ img {
 }
 
 .search-button{
-  margin: 100px;
+  margin: px;
 }
 
-/*
-.innerFormOne {
-
+.product-edit{
+  text-align: center;
 }
-.name {
-  margin: auto;
-}
-.image {
-  margin: 0px;
-}
-.show {
-  margin: auto;
-}
-.ShowProductTable {
-  margin: auto;
-} */

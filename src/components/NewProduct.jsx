@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect} from 'react-router-dom';
-import { Button, Input, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid } from 'semantic-ui-react'
 import '../App.css'
 
 
@@ -15,6 +15,7 @@ class NewProduct extends Component {
             material: "",
             color: "",
             strap: "",
+            qty: "",
             redirect: false
         }
     }
@@ -32,6 +33,7 @@ class NewProduct extends Component {
             body: JSON.stringify({
                 name: this.state.name,
                 price: this.state.price,
+                qty: this.state.qty,
                 description: this.state.description,
                 img: this.state.img,
                 material: this.state.material,
@@ -66,12 +68,20 @@ class NewProduct extends Component {
                     value={this.state.name}/>
                 </Form.Group>
                 <Form.Group unstackable widths={1}>
-                  <Form.Input type="number" step="0.01" id="price"
+                  <Form.Input type="number" step="0.01" id="price" min="0"
                     label= "Price:"
                     placeholder="Price"
                     required
                     onChange={event => this.handleChange(event)}
                     value={this.state.price}/>
+                </Form.Group>
+                <Form.Group unstackable widths={1}>
+                  <Form.Input type="number" step="1" id="qty" min="0"
+                    label= "Quantity:"
+                    placeholder="0"
+                    required
+                    onChange={event => this.handleChange(event)}
+                    value={this.state.qty}/>
                 </Form.Group>
                 <Form.Group unstackable widths={1}>
                   <Form.Input type="text" id="description"
