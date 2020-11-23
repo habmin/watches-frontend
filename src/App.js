@@ -151,7 +151,7 @@ class App extends Component {
             <Card.Description>
               <h3>$ {product.price}</h3>
               {
-                this.state.currentUser && product.qty
+                this.state.currentUser
                 ? product.qty
                   ? <Button type="button" onClick={() => this.addToCart(product)}>ADD</Button>
                   : <Button type="button">SOLD OUT</Button>
