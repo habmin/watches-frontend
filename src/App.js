@@ -12,7 +12,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { Card, Button, Image } from 'semantic-ui-react';
 
-let baseURL = process.env.REACT_ACT_BASEURL;
+let baseURL = process.env.REACT_APP_BASEURL;
 
 class App extends Component {
   constructor(props){
