@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect} from 'react-router-dom';
+import { Button, Form, Grid } from 'semantic-ui-react'
+import '../App.css'
+
 
 class NewProduct extends Component {
     constructor(props) {
@@ -30,6 +33,7 @@ class NewProduct extends Component {
             body: JSON.stringify({
                 name: this.state.name,
                 price: this.state.price,
+                qty: this.state.qty,
                 description: this.state.description,
                 img: this.state.img,
                 material: this.state.material,
@@ -52,44 +56,74 @@ class NewProduct extends Component {
         if (this.state.redirect)
             return <Redirect to='/' />;
         return (
-            <form onSubmit={event => this.submitHandler(event)}>
-                <label htmlFor="name">Name:</label>
-                <input type="text" id="name"
+          <div className="formContainer">
+          <Grid centered columns={5}>
+          <Grid.Column>
+            <Form className="form" onSubmit={event => this.submitHandler(event)}>
+              <Form.Group className="innerFormOne" unstackable widths={1}>
+                <Form.Input  type="text" id="name"
+                    label= "Name:"
+                    placeholder="Name"
                     required
                     onChange={event => this.handleChange(event)}
                     value={this.state.name}/>
-                <label htmlFor="price">Price:</label>
-                <input type="number" step="0.01" id="price" min="0"
+                </Form.Group>
+                <Form.Group unstackable widths={1}>
+                  <Form.Input type="number" step="0.01" id="price" min="0"
+                    label= "Price:"
+                    placeholder="Price"
                     required
                     onChange={event => this.handleChange(event)}
                     value={this.state.price}/>
-                <label htmlFor="description">Description:</label>
-                <input type="text" id="description"
-                    onChange={event => this.handleChange(event)}
-                    value={this.state.description}/>
-                <label htmlFor="img">IMG Source:</label>
-                <input type="text" id="img"
-                    onChange={event => this.handleChange(event)}
-                    value={this.state.img}/>
-                <label htmlFor="material">Material:</label>
-                <input type="text" id="material"
-                    onChange={event => this.handleChange(event)}
-                    value={this.state.material}/>
-                <label htmlFor="color">Color:</label>
-                <input type="text" id="color"
-                    onChange={event => this.handleChange(event)}
-                    value={this.state.color}/>
-                <label htmlFor="strap">Strap:</label>
-                <input type="text" id="strap"
-                    onChange={event => this.handleChange(event)}
-                    value={this.state.strap}/>
-                <label htmlFor="quantity">Quantity:</label>
-                <input type="number" step="1" id="qty"
+                </Form.Group>
+                <Form.Group unstackable widths={1}>
+                  <Form.Input type="number" step="1" id="qty" min="0"
+                    label= "Quantity:"
+                    placeholder="0"
                     required
                     onChange={event => this.handleChange(event)}
                     value={this.state.qty}/>
-                <button type="submit">Submit</button>
-            </form>
+                </Form.Group>
+                <Form.Group unstackable widths={1}>
+                  <Form.Input type="text" id="description"
+                    label="Description:"
+                    placeholder="Description"
+                    onChange={event => this.handleChange(event)}
+                    value={this.state.description}/>
+                </Form.Group>
+                <Form.Group unstackable widths={1}>
+                  <Form.Input type="text" id="img"
+                    label="IMG Source:"
+                    placeholder="IMG Source"
+                    onChange={event => this.handleChange(event)}
+                    value={this.state.img}/>
+                </Form.Group>
+                <Form.Group unstackable widths={1}>
+                  <Form.Input type="text" id="material"
+                    label="Material:"
+                    placeholder="Material"
+                    onChange={event => this.handleChange(event)}
+                    value={this.state.material}/>
+                </Form.Group>
+                <Form.Group unstackable widths={1}>
+                  <Form.Input type="text" id="color"
+                    label="Color:"
+                    placeholder="Color"
+                    onChange={event => this.handleChange(event)}
+                    value={this.state.color}/>
+                </Form.Group>
+                <Form.Group unstackable widths={1}>
+                  <Form.Input type="text" id="strap"
+                    label="Strap:"
+                    placeholder="Strap"
+                    onChange={event => this.handleChange(event)}
+                    value={this.state.strap}/>
+                </Form.Group>
+                <Button type="submit">Submit</Button>
+            </Form>
+            </Grid.Column>
+            </Grid>
+            </div>
         );
     };
 };
