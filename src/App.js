@@ -15,7 +15,7 @@ import { Card, Button, Input, Image, Form, Grid, Header, Message, Segment } from
 
 let baseURL;
 if (process.env.NODE_ENV === 'development')
-  baseURL = 'http://localhost:3008';
+  baseURL = 'http://localhost:' + process.env.REACT_APP_PORT;
 else
   baseURL = 'heroku/deployment URL placeholder';
 
@@ -142,34 +142,40 @@ class App extends Component {
   }
 
   renderIndex = (list) => {
-     return list.map((product) => {
-      return (
-        <Card className="product" key={product._id}>
-          <Card.Content>
-            <Card.Header>{product.name}</Card.Header>
-            <Image src={product.img} alt={`${this.props.name} watches`} wrapped ui={false} />
-            <Card.Description>
-              <h3>$ {product.price}</h3>
+    return (
+      <Card.Group itemsPerRow={3} stackable>
+      {
+        list.map((product) => {
+          return (        
+          <Card className="product" key={product._id}>
+            <Card.Content>
+              <Card.Header>{product.name}</Card.Header>
+              <Image src={product.img} alt={`${this.props.name} watches`} wrapped ui={false} />
+              <Card.Description>
+                <h3>$ {product.price}</h3>
+                {
+                  this.state.currentUser
+                  ? product.qty
+                    ? <Button type="button" content="ADD TO CART" onClick={() => this.addToCart(product)} />
+                    : <Button type="button" content="SOLD OUT" />
+                  : <Button type="button" content="SIGN IN TO ADD" />
+                }
+              </Card.Description>
+            </Card.Content>
+            <Card.Content extra>
               {
-                this.state.currentUser
-                ? product.qty
-                  ? <Button type="button" onClick={() => this.addToCart(product)}>ADD</Button>
-                  : <Button type="button">SOLD OUT</Button>
-                : <Button type="button">SIGN IN TO ADD</Button>
+                this.state.currentUser && this.state.currentUser.username === "admin"
+                ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
+                : <></>
               }
-            </Card.Description>
-          </Card.Content>
-          <Card.Content extra>
-            {
-              this.state.currentUser && this.state.currentUser.username === "admin"
-              ? <Link to={"/" + product._id + '/edit'}>Edit Product</Link>
-              : <></>
-            }
-            <Link to={"/" + product._id}>More Details</Link>
-          </Card.Content>
-        </Card>
-      );
-    });
+              <Link to={"/" + product._id}>More Details</Link>
+            </Card.Content>
+          </Card>
+          );
+        })
+      }
+      </Card.Group>
+    )
   };
 
   render() {
