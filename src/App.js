@@ -9,8 +9,8 @@ import Search from './components/Search.jsx';
 
 import './App.css';
 
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom'
-import { Card, Button, Input, Image, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom';
+import { Card, Button, Input, Image, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 
 
 let baseURL;

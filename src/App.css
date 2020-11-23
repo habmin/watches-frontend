@@ -16,7 +16,7 @@ img {
   font-family: 'Poiret One', cursive;
   margin: 0%;
 }
-.searchBar {
+.search-bar {
   font-family: 'Raleway Dots', Poiret One;
   float: left;
   color: #fcfaf9;
@@ -57,6 +57,11 @@ img {
 
 /*END FORM*/
 
+.show-path {
+  display: flex;
+  flex-direction: column;
+}
+
  .product {
   margin-top: 100px;
 }
@@ -66,6 +71,15 @@ img {
   justify-content: space-evenly;
   align-items: center;
 }
+
+.search-bar {
+  margin: 10px;
+}
+
+.search-button{
+  margin: 100px;
+}
+
 /*
 .innerFormOne {
 

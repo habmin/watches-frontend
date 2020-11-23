@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Card, Button, Input, Image, Form, Icon} from 'semantic-ui-react';
 
 class Search extends Component{
     constructor(props) {
@@ -49,9 +50,9 @@ class Search extends Component{
     render() {
         return (
             <div className="search-bar">
-                <form className="search-form" onSubmit={(event) => this.fetchResults(event)}>
+                <Form className="search-form" onSubmit={(event) => this.fetchResults(event)}>
                     <label htmlFor="search-input"></label>
-                    <input
+                    <Input
                         className="search-input"
                         id="search-input"
                         name="input"
@@ -60,9 +61,9 @@ class Search extends Component{
                         type="text"
                         onChange={event => this.handleChange(event)}
                     />
-                    <button type="submit">Search</button>
-                </form>
-                <button onClick={this.props.clearResults}>Clear</button>
+                    <Button className="search-button" color="black" type="submit"><Icon name="search" />Search</Button>
+                    <Button className="search-button" color="black" type="button" onClick={this.props.clearResults}>Clear</Button>                   
+                </Form>
                 {
                     !this.state.foundResults
                     ?   <p>No Results Found</p>
