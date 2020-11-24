@@ -38,7 +38,7 @@ Fifth Hour is a full stack CRUD application built with Mern Stack and React as a
   * View Products
   * Cart Functionality
   * Administrative privileges include adding inventory
-    * Update, Delete, and Add Seed Inventory
+    * Update, Delete
 
 ### Front-End Link
 
@@ -47,6 +47,9 @@ https://fifth-hour-frontend.herokuapp.com/
 ### Back-End Link
 
 https://fifth-hour-backend.herokuapp.com/
+
+* Git Hub back-End
+  * https://github.com/jasmine-snow/watches_backend
 
 
 #### Link to Wireframe
