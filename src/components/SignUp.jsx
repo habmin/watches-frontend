@@ -89,6 +89,7 @@ class SignUp extends Component {
   };
 
   render() {
+    console.log(this.props.baseURL);
     if (this.state.redirect)
       return <Redirect to='/' />;
     return (
