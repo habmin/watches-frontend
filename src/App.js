@@ -160,7 +160,7 @@ class App extends Component {
           <Card className="product" key={product._id}>
             <Card.Content>
               <Card.Header>{product.name}</Card.Header>
-              <Image className="product-img" fluid src={product.img} alt={`${this.props.name} watches`} />
+              <Image className="product-img" size="medium" src={product.img} alt={`${this.props.name} watches`} />
               <Card.Description>
                 <h3>$ {product.price}</h3>
                 {
