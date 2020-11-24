@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect} from 'react-router-dom';
+import { Button, Image } from 'semantic-ui-react';
 import './Cart.css'
 
 
@@ -51,28 +52,39 @@ class Cart extends Component {
             return <Redirect to='/' />;
         return (
             <div className="cart-display">
-                <table>
+                <table className="cart-table">
                     {
                         this.state.cart.map(item => {
                             return (
-                              <table className="tableOne">
-                              <tr>
-                                  <td><strong>{item.name}</strong></td>
-                                  <td><strong>${item.price}.00 </strong></td>
-                              </tr>
                                 <tr>
-                                    <td><img className="cartImg" src={item.img}/></td>
-                                    <td><button className="removeButton" type="button" onClick={() => {this.removeItem(item)}}>Remove</button></td>
+                                    <td className="col1">
+                                        <td><Image size="tiny" className="cartImg" src={item.img}/></td>
+                                        <p><strong>{item.name}</strong></p>
+                                    </td>
+                                    <td className="col2"><h3>${item.price}.00</h3></td>
+                                    <td className="col3">
+                                        <Button 
+                                            color="red" 
+                                            className="removeButton" 
+                                            type="button" 
+                                            onClick={() => {this.removeItem(item)}}>Remove
+                                        </Button>
+                                    </td>
                                 </tr>
-
-                              </table>
                             )
                         })
                     }
-                    <tr >
-                        <th><strong> Total Before Tax (USD): </strong> ${total}.00</th>
-                        <th><button className="checkoutButton" type="button" onClick={this.checkout}>Checkout</button></th>
-
+                    <tr>
+                        <td className="col1"><p><strong> Total Before Tax (USD): </strong></p></td>
+                        <td className="col2"><h3>${total}.00</h3></td>
+                        <td className="col3">
+                            <Button 
+                                color="black" 
+                                className="checkoutButton" 
+                                type="button" 
+                                onClick={this.checkout}>Checkout
+                            </Button>
+                        </td>
                     </tr>
                 </table>
             </div>

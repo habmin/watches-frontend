@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Button, Input, Image, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+import { Button, Image, } from 'semantic-ui-react';
 import './ShowProducts.css'
 
 function ShowProduct(props) {
