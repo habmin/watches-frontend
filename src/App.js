@@ -51,7 +51,6 @@ class App extends Component {
       }).then(res => {
         return res.json();
       }).then(productData => {
-        console.log(productData);
         this.setState({
           products: productData
         })
