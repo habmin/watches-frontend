@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './Cart.css'
 import { withRouter, Redirect} from 'react-router-dom';
 
 class Cart extends Component {
@@ -50,30 +51,32 @@ class Cart extends Component {
         return (
             <div className="cart-display">
                 <table>
-                    <tr>
-                        <th>Item</th>
-                        <th>Price</th>
+                    <tr className="cart-row">
+                        <th className="cart-item cart-header cart-column">Item</th>
+                        <th className="cart-price cart-header cart-column">Price</th>
                     </tr>
                     {
                         this.state.cart.map(item => {
                             return (
                                 <tr>
                                     <td>{item.name}</td>
-                                    <td>{item.price}</td>
-                                    <td><button type="button" onClick={() => {this.removeItem(item)}}>Remove Item</button></td>
+                                    <td >{item.price}</td>
+                                    <td><button type="button" className="btn-danger" onClick={() => {this.removeItem(item)}}>Remove Item</button></td>
                                 </tr>
                             )
                         })
                     }
                     <tr>
-                        <th>Total</th>
-                        <td>{total}</td>
+                        <th className="cart-total-title">Total</th>
+                        <td className="cart-total-price">{total}</td>
                     </tr>
                 </table>
-                <button type="button" onClick={this.checkout}>Checkout</button>
+                <button type="button" className="btn-checkout" onClick={this.checkout}>Checkout</button>
             </div>
         );
     }
 };
 
 export default withRouter(Cart);
+
+// className="btn-purchase
