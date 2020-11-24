@@ -9,8 +9,9 @@ import Search from './components/Search.jsx';
 
 import './App.css';
 
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
-import { Card, Button, Image } from 'semantic-ui-react';
+import { BrowserRouter as Router, Route, Link, Switch, } from 'react-router-dom';
+import { Card, Button, Image, } from 'semantic-ui-react';
+
 
 let baseURL = process.env.REACT_APP_BASEURL;
 
@@ -38,22 +39,6 @@ class App extends Component {
     catch(error) {
       console.log(error);
     }
-  };
-
-  getSeed = () => {
-    fetch(baseURL + "/watches/seed", {
-      method: 'POST',
-      body: JSON.stringify({
-          currentUser: this.state.currentUser
-      }),
-      headers: {'Content-Type': 'application/json'}
-      }).then(res => {
-        return res.json();
-      }).then(productData => {
-        this.setState({
-          products: productData
-        })
-      }).catch(error => {console.log(error)});
   };
 
   componentDidMount() {
@@ -159,14 +144,14 @@ class App extends Component {
           <Card className="product" key={product._id}>
             <Card.Content>
               <Card.Header>{product.name}</Card.Header>
-              <Image className="product-img" size="medium" src={product.img} alt={`${this.props.name} watches`} />
+              <Image className="product-img" fluid src={product.img} alt={`${this.props.name} watches`} />
               <Card.Description>
                 <h3>$ {product.price}</h3>
                 {
                   this.state.currentUser
                   ? product.qty
-                    ? <Button type="button" content="ADD TO CART" onClick={() => this.addToCart(product)} />
-                    : <Button type="button" content="SOLD OUT" />
+                    ? <Button color="black" type="button" content="ADD TO CART" onClick={() => this.addToCart(product)} />
+                    : <Button color="red" type="button" content="SOLD OUT" />
                   : <Button type="button" content="SIGN IN TO ADD" />
                 }
               </Card.Description>
@@ -193,11 +178,6 @@ class App extends Component {
         <Router>
           <div>
           <div className="header">
-            {
-            /* make this a nav bar
-            user sign in
-            */
-            }
             <nav className="navBar">
             <style>
             @import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
@@ -207,11 +187,7 @@ class App extends Component {
               <li className="navBarLi"><Link to="/">HOME</Link></li>
               {
                 this.state.currentUser && this.state.currentUser.username === "admin"
-                ? 
-                  <div>
-                    <li className="navBarLi"><Link to="/new">ADD INVENTORY</Link></li>
-                    <li className="navBarLi"><Link to="/" onClick={this.getSeed}>IMPORT PRODUCT SEED</Link></li>
-                  </div>
+                ? <li className="navBarLi"><Link to="/new">ADD INVENTORY</Link></li>
                 : <></>
               }
               {

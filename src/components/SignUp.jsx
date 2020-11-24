@@ -45,7 +45,6 @@ class SignUp extends Component {
       }).then((res) => {
           return res.json();
       }).then((user) => {
-        console.log(user);
         if (user.error) {
           this.setState({
             errorMsg: `${user.error}`,
@@ -64,7 +63,6 @@ class SignUp extends Component {
           }).then((res) => {
             return res.json();
           }).then((user) => {
-            console.log(user);
             if (user.error) {
             this.setState({
               errorMsg: `${user.error}`,
@@ -89,7 +87,6 @@ class SignUp extends Component {
   };
 
   render() {
-    console.log(this.props.baseURL);
     if (this.state.redirect)
       return <Redirect to='/' />;
     return (
