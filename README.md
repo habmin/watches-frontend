@@ -1,17 +1,21 @@
 # Fifth Hour
 
-## Descriptions 
-Fifth Hour is a full stack CRUD application built with Mern Stack and React as a front-end frameworks. This application contains the ability to allow customers to shop online for watches. 
+## Descriptions
+Fifth Hour is a full stack CRUD application built with Mern Stack and React as a front-end frameworks. This application contains the ability to allow customers to shop online for watches.
 
 ## Examples
-  ADD SCREENSHOTS HERE!!!!
+![one](desktop/one.png)
+![two](desktop/two.png)
+![three](desktop/three.png)
 
-## Contributors 
 
-  * Henry Baum 
+
+## Contributors
+
+  * Henry Baum
   * Sayed Naser  
   * Jasmine Snow
-   
+
 ## Technologies
 
 * Mern Stack
@@ -23,14 +27,13 @@ Fifth Hour is a full stack CRUD application built with Mern Stack and React as a
 * Create-react-app
 
 ## Features
-* Include: 
-  * Login/ Register 
+* Include:
+  * Login/ Register
   * View Products
-  * Cart Functionality 
-  * Administrative privileges include adding inventory 
-    * Update, Delete 
+  * Cart Functionality
+  * Administrative privileges include adding inventory
+    * Update, Delete
 
-#### Link to Wireframe 
+#### Link to Wireframe
 
 https://wireframe.cc/TLHP82
-  
