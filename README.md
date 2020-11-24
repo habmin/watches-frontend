@@ -38,7 +38,7 @@ Fifth Hour is a full stack CRUD application built with Mern Stack and React as a
   * View Products
   * Cart Functionality
   * Administrative privileges include adding inventory
-    * Update, Delete
+    * Update, Delete, and Add Seed Inventory
 
 ### Front-End Link
 
