@@ -3,10 +3,17 @@
 ## Descriptions
 Fifth Hour is a full stack CRUD application built with Mern Stack and React as a front-end frameworks. This application contains the ability to allow customers to shop online for watches.
 
-## Examples
-Format: ![one](images/one.png)
-Format: ![two](images/two.png)
-Format: ![three](images/three.png)
+
+## Home Page
+![one](images/one.png)
+
+
+## Sign Up
+![two](images/two.png)
+
+
+## Sign In
+![three](images/three.png)
 
 
 
