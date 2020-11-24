@@ -30,7 +30,6 @@ class App extends Component {
       await fetch(baseURL + "/watches").then(res => {
         return res.json();
       }).then(productData => {
-        console.log(productData);
         this.setState({
           products: productData
         })
@@ -51,7 +50,6 @@ class App extends Component {
       }).then(res => {
         return res.json();
       }).then(productData => {
-        console.log(productData);
         this.setState({
           products: productData
         })
@@ -123,7 +121,6 @@ class App extends Component {
         cart: cartBuffer
       });
     }
-    console.log(this.state.cart)
   };
 
   checkoutCart = () => {
@@ -152,13 +149,13 @@ class App extends Component {
       searchResults: null
     });
   }
-  
+
   renderIndex = (list) => {
     return (
       <Card.Group className="product-cards" itemsPerRow={3} stackable>
       {
         list.map((product) => {
-          return (        
+          return (
           <Card className="product" key={product._id}>
             <Card.Content>
               <Card.Header>{product.name}</Card.Header>
@@ -219,22 +216,22 @@ class App extends Component {
               }
               {
                 this.state.currentUser
-                  ? 
+                  ?
                     <div>
                       <li className="navBarLi">
-                        <Link to="/cart">View Cart</Link>
+                        <Link to="/cart">VIEW CART</Link>
                       </li>
                       <li className="navBarLi">
-                        <Link to="/signout" onClick={this.logoutUser}>Sign Out</Link>
+                        <Link to="/signout" onClick={this.logoutUser}>SIGN OUT</Link>
                       </li>
                     </div>
-                  : 
+                  :
                     <div>
                       <li className="navBarLi">
-                        <Link to="/signup">Sign Up</Link>
+                        <Link to="/signup">SIGN UP</Link>
                       </li>
                       <li className="navBarLi">
-                        <Link to="/signin">Sign In</Link>
+                        <Link to="/signin">SIGN IN</Link>
                       </li>
                     </div>
               }
@@ -248,9 +245,9 @@ class App extends Component {
               <SignUp baseURL={baseURL} loginUser={this.loginUser}/>
             </Route>
             <Route path='/cart'>
-              <Cart 
-                baseURL={baseURL} 
-                cart={this.state.cart} 
+              <Cart
+                baseURL={baseURL}
+                cart={this.state.cart}
                 checkoutCart={this.checkoutCart}
                 removeCartItem={this.removeCartItem}/>
             </Route>
@@ -260,9 +257,9 @@ class App extends Component {
                 this.state.products.map((product) => {
                   return (
                     <Route path={"/" + product._id + "/edit"}>
-                      <ProductEdit 
-                        baseURL={baseURL} 
-                        product={product} 
+                      <ProductEdit
+                        baseURL={baseURL}
+                        product={product}
                         updateProduct={this.updateProduct}
                         deletedProduct={this.deletedProduct}/>
                     </Route>
@@ -281,9 +278,9 @@ class App extends Component {
               this.state.products.map((product) => {
                 return (
                   <Route exact path={"/" + product._id}>
-                    <ShowProduct 
-                      baseURL={baseURL} 
-                      product={product} 
+                    <ShowProduct
+                      baseURL={baseURL}
+                      product={product}
                       currentUser={this.state.currentUser}
                       addToCart={this.addToCart}/>
                   </Route>
@@ -303,9 +300,9 @@ class App extends Component {
             }
             <Route path='/'>
               <div className="show-path">
-                <Search 
-                  baseURL={baseURL} 
-                  searchResults={this.searchResults} 
+                <Search
+                  baseURL={baseURL}
+                  searchResults={this.searchResults}
                   clearResults={this.clearResults}/>
                 <div className="cards">
                   {

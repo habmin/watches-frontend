@@ -1,0 +1,19 @@
+.cartImg {
+  height: 15%;
+  width: 15%;
+}
+
+.removeButton {
+  border: 1px solid;
+  border-color: #bb0a21;
+  background-color: white;
+  padding: 5px;
+
+}
+.checkoutButton {
+  border: 1px solid;
+  background-color: white;
+}
+.tableOne {
+  margin: 10% 0 0 10%;
+}
