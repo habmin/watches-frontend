@@ -14,7 +14,7 @@ class Cart extends Component {
     }
 
     checkout = () => {
-        this.state.cart.map(item => {
+        this.state.cart.forEach(item => {
             fetch(this.props.baseURL + '/watches/' + item._id, {
                 method: 'PUT',
                 body: JSON.stringify({

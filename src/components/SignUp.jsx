@@ -39,7 +39,6 @@ class SignUp extends Component {
             email: this.state.email,
             name: this.state.name,
             phone: this.state.phone,
-            email: this.state.email
         }),
         headers: {'Content-Type': 'application/json'}
       }).then((res) => {
