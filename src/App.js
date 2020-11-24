@@ -13,11 +13,7 @@ import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-ro
 import { Card, Button, Input, Image, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 
 
-let baseURL;
-if (process.env.NODE_ENV === 'development')
-  baseURL = 'http://localhost:' + process.env.REACT_APP_PORT;
-else
-  baseURL = 'heroku/deployment URL placeholder';
+let baseURL = process.env.REACT_APP_BASEURL;
 
 class App extends Component {
   constructor(props){
