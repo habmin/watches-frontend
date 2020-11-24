@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect} from 'react-router-dom';
+import './Cart.css'
+
 
 class Cart extends Component {
     constructor(props) {
@@ -50,27 +52,29 @@ class Cart extends Component {
         return (
             <div className="cart-display">
                 <table>
-                    <tr>
-                        <th>Item</th>
-                        <th>Price</th>
-                    </tr>
                     {
                         this.state.cart.map(item => {
                             return (
+                              <table className="tableOne">
+                              <tr>
+                                  <td><strong>{item.name}</strong></td>
+                                  <td><strong>${item.price}.00 </strong></td>
+                              </tr>
                                 <tr>
-                                    <td>{item.name}</td>
-                                    <td>{item.price}</td>
-                                    <td><button type="button" onClick={() => {this.removeItem(item)}}>Remove Item</button></td>
+                                    <td><img className="cartImg" src={item.img}/></td>
+                                    <td><button className="removeButton" type="button" onClick={() => {this.removeItem(item)}}>Remove</button></td>
                                 </tr>
+
+                              </table>
                             )
                         })
                     }
-                    <tr>
-                        <th>Total</th>
-                        <td>{total}</td>
+                    <tr >
+                        <th><strong> Total Before Tax (USD): </strong> ${total}.00</th>
+                        <th><button className="checkoutButton" type="button" onClick={this.checkout}>Checkout</button></th>
+
                     </tr>
                 </table>
-                <button type="button" onClick={this.checkout}>Checkout</button>
             </div>
         );
     }
