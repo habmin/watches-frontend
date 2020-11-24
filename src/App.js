@@ -41,6 +41,23 @@ class App extends Component {
     }
   };
 
+  getSeed = () => {
+    fetch(baseURL + "/watches/seed", {
+      method: 'POST',
+      body: JSON.stringify({
+          currentUser: this.state.currentUser
+      }),
+      headers: {'Content-Type': 'application/json'}
+      }).then(res => {
+        return res.json();
+      }).then(productData => {
+        console.log(productData);
+        this.setState({
+          products: productData
+        })
+      }).catch(error => {console.log(error)});
+  };
+
   componentDidMount() {
     this.getProducts();
   };
@@ -187,7 +204,11 @@ class App extends Component {
               <li className="navBarLi"><Link to="/">HOME</Link></li>
               {
                 this.state.currentUser && this.state.currentUser.username === "admin"
-                ? <li className="navBarLi"><Link to="/new">ADD INVENTORY</Link></li>
+                ? 
+                  <div>
+                    <li className="navBarLi"><Link to="/new">ADD INVENTORY</Link></li>
+                    <li className="navBarLi"><Link to="/" onClick={this.getSeed}>IMPORT PRODUCT SEED</Link></li>
+                  </div>
                 : <></>
               }
               {
